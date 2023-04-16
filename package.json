@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "d3-quadtree": "^3.0.1",
-    "layercake": "^7.4.0"
+    "layercake": "^7.4.0",
+    "maplibre-gl": "^2.4.0"
   }
 }
