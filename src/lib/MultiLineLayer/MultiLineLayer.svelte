@@ -1,4 +1,7 @@
 <script>
+    import { onMount } from "svelte";
+    import * d3 from "d3";
+
     import { LayerCake, ScaledSvg, Html, flatten } from 'layercake';
     import { scaleOrdinal } from 'd3-scale';
     import { timeParse, timeFormat } from 'd3-time-format';
@@ -12,12 +15,19 @@
   
     // This example loads csv data as json using @rollup/plugin-dsv
     //import data from './fruit.csv';
-    const data = [
-        {month:"2015-04-01",apples: 3840,bananas:1920,cherries:960,dates:400},
-        {month:"2015-03-01",apples: 1600,bananas:1440,cherries:960,dates:400},
-        {month:"2015-02-01",apples: 640,bananas:960,cherries:640,dates:400},
-        {month:"2015-01-01",apples: 320,bananas:480,cherries:640,dates:400}
-    ];
+    // const data = [
+    //     {month:"2015-04-01",apples: 3840,bananas:1920,cherries:960,dates:400},
+    //     {month:"2015-03-01",apples: 1600,bananas:1440,cherries:960,dates:400},
+    //     {month:"2015-02-01",apples: 640,bananas:960,cherries:640,dates:400},
+    //     {month:"2015-01-01",apples: 320,bananas:480,cherries:640,dates:400}
+    // ];
+
+    let data;
+    onMount(
+      async() => {
+        data = await d3.csv("")
+      }
+    )
 
     /* --------------------------------------------
      * Set what is our x key to separate it from the other series
