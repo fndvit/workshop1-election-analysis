@@ -18,8 +18,8 @@
     {x: 20, y: 40}
   ];
 
-  const xKey = 'value';
-  const yKey = 'year';
+  const xKey = 'x';
+  const yKey = 'y';
 
   data.forEach(d => {
     d[xKey] = +d[xKey];
