@@ -1,6 +1,8 @@
 <script>
     import { onMount } from "svelte";
-    import * d3 from "d3";
+    // import fiveYearsNorm from "../../data/fiveyears_norm.json"
+    import dataVotes from "../../data/fiveyears_votes.json"
+    import dataCouncilors from "../../data/fiveyears_councilors.json"
 
     import { LayerCake, ScaledSvg, Html, flatten } from 'layercake';
     import { scaleOrdinal } from 'd3-scale';
@@ -22,22 +24,21 @@
     //     {month:"2015-01-01",apples: 320,bananas:480,cherries:640,dates:400}
     // ];
 
-    let data;
-    onMount(
-      async() => {
-        data = await d3.csv("")
-      }
-    )
-
     /* --------------------------------------------
      * Set what is our x key to separate it from the other series
      */
-    const xKey = 'month';
-    const yKey = 'value';
-    const zKey = 'fruit';
+
+    let eVarSel;
+    let elecVars = ["votes_sum", "councilors_mean"];
+
+    let data = dataVotes
+
+    const xKey = 'year';
+    const yKey = 'councilors_mean';
+    const zKey = 'main_party';
   
     const seriesNames = Object.keys(data[0]).filter(d => d !== xKey);
-    const seriesColors = ['#ffe4b8', '#ffb3c0', '#ff7ac7', '#ff00cc'];
+    const seriesColors = ['#ffe4b8', '#ffb3c0', '#ff7ac7', '#ff00cc', '#ffe4b8'];
   
     const parseDate = timeParse('%Y-%m-%d');
   
@@ -80,6 +81,14 @@
   </style>
   
   <div class="chart-container">
+    <!-- <div>
+      {#each elecVars as eVar, i}
+        <label>
+          <input type="radio" bind:group={elecVars} name="elecVars" bind:value={eVarSel}/>
+          {eVar}
+        </label>
+      {/each}
+    </div> -->
     <LayerCake
       ssr={true}
       percentRange={true}
@@ -97,7 +106,6 @@
         <AxisX
           gridlines={false}
           ticks={data.map(d => d[xKey]).sort((a, b) => (+a) - (+b))}
-          formatTick={formatTickX}
           snapTicks={true}
           tickMarks={true}
         />
