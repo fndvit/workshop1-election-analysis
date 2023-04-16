@@ -1,5 +1,4 @@
 <script>
-  import { LayerCake } from 'layercake';
   import { getContext } from 'svelte';
   const { data, xGet, yGet, xScale, yScale }= getContext("LayerCake");
   // Define some data
@@ -26,15 +25,5 @@
   {/each}
 </g>
 <style>
-  /*
-    The wrapper div needs to have an explicit width and height in CSS.
-    It can also be a flexbox child or CSS grid element.
-    The point being it needs dimensions since the <LayerCake> element will
-    expand to fill it.
-  */
-  .chart-container {
-    width: 100%;
-    height: 300px;
-  }
 </style>
 
