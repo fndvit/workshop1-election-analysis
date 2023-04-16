@@ -1,5 +1,6 @@
 <script>
   import BarChartLayer from './lib/BarChartLayer.svelte';
+  import MultiLineLayer from './lib/MultiLineLayer/MultiLineLayer.svelte';
 </script>
 
 <main>
@@ -10,7 +11,9 @@
   </header>
 
   <BarChartLayer/>
-  
+
+  <MultiLineLayer />
+
   <!-- <Counter/> -->
   <section class="introduction">
     <h2>Introduction</h2>
@@ -39,8 +42,5 @@ section, header {
   max-width: 700px;
   margin: 0 auto;
 }
-.chart-container {
-    width: 100%;
-    height: 250px;
-  }
+
 </style>

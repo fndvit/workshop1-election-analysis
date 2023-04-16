@@ -16,6 +16,7 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
+    "d3-quadtree": "^3.0.1",
     "layercake": "^7.4.0"
   }
 }
