@@ -1,4 +1,4 @@
-v<script>
+<script>
   import * as d3 from "d3";
   import { onMount } from "svelte";
   import tallyDataRaw from "../data/fiveyears_tally.json";
