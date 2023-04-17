@@ -136,8 +136,8 @@ onMount(() => {
     
     <Map {filtered_data} {colorScale}  />
     {#if filtered_data.length > 0}
-    <StoryButton class="primary sm" on:click={()=>story('VOX',2019)}>
-      VOX story, 2019
+    <StoryButton class="primary sm" on:click={()=>story('PSC',2019)}>
+      PSC story, 2019
     </StoryButton>
     <ScaleForm
       bind:selected_schema
