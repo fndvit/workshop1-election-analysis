@@ -109,7 +109,7 @@
     
    
 
-  //  map.addControl(new NavigationControl(), "top-right");
+    map.addControl(new NavigationControl(), "top-right");
     function update() {
       featureElements = svg.selectAll("path.municipi");
       //featureElements.raise();
