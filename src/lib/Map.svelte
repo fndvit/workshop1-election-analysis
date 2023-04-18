@@ -110,6 +110,32 @@
    
 
     map.addControl(new NavigationControl(), "top-right");
+
+    class stories_ctrl {
+                onAdd(map) {
+                    this.map = map;
+                    this.container = document.createElement('div');
+                    //this.container.className = 'click_country_control_container';
+                    this.container.className = 'stories_ctrl';
+                    
+
+                    return this.container;
+                }
+                onRemove() {
+                    this.container.parentNode.removeChild(this.container);
+                    this.map = undefined;
+                }
+            }
+
+            let stories_ctrl_ = new stories_ctrl();
+
+            map.addControl(stories_ctrl_, 'bottom-right');
+            
+            jQuery('.stories_ctrl').addClass('mapboxgl-ctrl');
+
+            jQuery('.stories_ctrl').append('<div class="stories_container">'
+              +'<div class="story psc_story"><h2>PSC: a declining party</h2><ul></ul></div><div class="story vox_story"><h2>VOX: a new extreme-right rising party</h2><ul></ul>'
+                +'</div></div>')
     function update() {
       featureElements = svg.selectAll("path.municipi");
       //featureElements.raise();
@@ -266,8 +292,6 @@
 
 
 
-console.warn(_f)
-console.info(console.info(_f.target.__data__.properties.codiine))
 
 console.info(filtered_data)
       if (!filtered_data || !_f) 
@@ -349,6 +373,14 @@ console.info(filtered_data)
     z-index: 99999999;
     position: relative;
 } */
+
+.stories_container >div
+{
+  display: none;
+  
+}
+
+
   svg,
   .maplibregl-canvas-container svg {
     position: absolute;

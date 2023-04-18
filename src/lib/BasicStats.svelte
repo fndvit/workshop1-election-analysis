@@ -40,7 +40,8 @@
       })
       .attr("stop-color", function (d, i) {
         if (i < 10) console.warn(i, colorScale(i));
-        return colorScale(i);
+        return colorScale(i)
+        
       });
     var rect = svg
       .append("rect")
@@ -65,8 +66,7 @@
     });
 
     let xValues = domain; //.map((d)=>String(d));
-    console.warn(xValues);
-    console.log(range);
+    
     var xScale = d3
       .scaleLinear()
 
@@ -120,6 +120,7 @@
 
 <section>
   <!-- <h3>Basic stats of voted_proportion</h3> -->
+  <center>Proportion of votes</center>
   <ul>
     <li>Min: {stats.min}</li>
     <li>Max: {stats.max}</li>
@@ -132,13 +133,14 @@
 </section>
 
 <style>
+
   path.domain,
   line {
     opacity: 0;
   }
   section {
-    padding: 10px;
-    margin: 10px;
+    padding: 0px;
+    margin: 0px;
     color: white;
   }
   ul li {

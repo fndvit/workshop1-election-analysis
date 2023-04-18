@@ -4,6 +4,7 @@
   import Map from "./lib/Map.svelte";
   import LateralMenu from "./lib/LateralMenu.svelte";
 import * as d3 from "d3";
+import jQuery from 'jquery';
 import BasicStats from "./lib/BasicStats.svelte";
 import ScaleForm from "./lib/ScaleForm.svelte";
 import StoryButton from "./lib/StoryButton.svelte"
@@ -27,12 +28,10 @@ const createColorScale = (selected_schema, min, max) => {
 };
 
 const getYears = () => {
-  /*    console.info(
-    observable_data.map(d=>d.year)
-  ) */
+
   years = [...new Set(observable_data.map((d) => d.year))];
   years = years.sort((a, b) => a - b);
-  //return years;
+
 };
 
 const getMainParties = () => {
@@ -67,16 +66,39 @@ $: colorScale = createColorScale(selected_schema, stats.min, stats.max);
 
 $: console.log(filtered_data);
 
-function story(main_party,year)
-    {
-      
-  filtered_data=observable_data.filter((d2)=>
+//not dynamic when clicking on story buttons..
+/*
+$:max_voted_features_party=observable_data.filter((d2)=>
   {
     
-    return (d2.main_party==main_party && d2.year==year)
-  })
-  console.warn(filtered_data)
-}
+    return (d2.main_party==selectedParty && d2.year==selectedYear)
+  }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
+  */
+function story(main_party,year)
+    {
+      //selectedParty=main_party;
+        filtered_data=observable_data.filter((d2)=>
+        {
+          
+          return (d2.main_party==main_party && d2.year==year)
+        })
+        jQuery('.maplibregl-ctrl-bottom-right').show();
+        jQuery('.stories_container .story').hide();
+        let story_div=jQuery('.'+main_party.toLowerCase()+'_story')
+        story_div.fadeIn('slow');
+        let max_voted_features_party=observable_data.filter((d2)=>
+        {
+          
+          return (d2.main_party==main_party && d2.year==year)
+        }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
+        console.log(max_voted_features_party)
+        let html='<h3>Max voted proportion municipalities</h3>';
+        html+=max_voted_features_party.map(d=>{
+          return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
+        }).join('')
+
+        story_div.find('ul').empty().append(html)
+  }
 onMount(() => {
   getYears();
   getMainParties();
@@ -139,6 +161,11 @@ onMount(() => {
     <StoryButton class="primary sm" on:click={()=>story('PSC',2019)}>
       PSC story, 2019
     </StoryButton>
+
+    <StoryButton class="primary sm" on:click={()=>story('VOX',2019)}>
+      VOX story
+    </StoryButton>
+
     <ScaleForm
       bind:selected_schema
       sel_schema="selected_schema"
@@ -166,7 +193,38 @@ onMount(() => {
     }
     :global(.maplibregl-control-container) {
     z-index: 99999999;
-    position: relative;
+    
+}
+:global(ul)
+{
+  list-style-type: none;
+}
+:global(.stories_container)
+{
+  float: right;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+    height: 300px;
+    border: 1px solid grey;
+}
+:global(.stories_ctrl)
+{
+  max-width: 25%;
+}
+
+:global(.maplibregl-ctrl-bottom-right)
+{
+  z-index: 99999;
+    background: #242424;
+    display: none;
+    max-width: 25%;
+} 
+
+:global(.stories_container .story)
+{
+  display: none;
 }
   :global(.scale_container path.domain),
   :global(.scale_container line) {
@@ -185,6 +243,11 @@ onMount(() => {
 section, header {
   max-width: 700px;
   margin: 0 auto;
+}
+:global(.maplibregl-ctrl-bottom-right)
+{
+  z-index: 99999;
+    background: #242424;
 }
 
 </style>
