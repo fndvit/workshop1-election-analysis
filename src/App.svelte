@@ -12,7 +12,7 @@ import StoryButton from "./lib/StoryButton.svelte"
 import { create_scale2 } from "./lib/BasicStats.svelte";
 import { observable_data } from "./data/observable_data.js";
 import dataVotes from "./data/fiveyears_votes.json"
-import dataVotesLeftRight from "./data/fiveyears_votesLeftRight.json"
+import dataVotesLeftRight from "./data/political_alignment.json"
 
   import { onMount } from "svelte";
 
@@ -28,7 +28,7 @@ let selectedYear = '';
 let selectedParty = "";
 
 const multilineColors1 = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
-const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
+const multilineColors2 = ['#7b3294','#c2a5cf','#a6dba0','#008837'];
 
 
   const createColorScale = (selected_schema, min, max) => {
