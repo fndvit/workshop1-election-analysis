@@ -20,7 +20,7 @@
     legendLabels.set("gains", "Gains");
     const color = d3
       .scaleOrdinal()
-      .range(["#c7001e", "#086fad"])
+      .range(["#C4140A", "#0ABAC4"])
       .domain(Array.from(legendLabels.keys()));
     const xAxis = d3.axisTop().scale(x);
     const yAxis = d3.axisLeft().scale(y);
@@ -83,6 +83,8 @@
       .attr("dx", "0.5em")
       .style("font", "10px sans-serif")
       .style("text-anchor", "begin")
+      .style("fill", "#ffffff")
+      .style("font-weight", "bold")
       .text((d) => (d.n !== 0 && d.x1 - d.x0 > 3 ? d.n : ""));
     // vakken
     //   .insert("rect", ":first-child")
