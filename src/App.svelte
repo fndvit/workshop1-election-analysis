@@ -3,88 +3,89 @@
   import MultiLineLayer from './lib/MultiLineLayer/MultiLineLayer.svelte';
   import Map from "./lib/Map.svelte";
   import LateralMenu from "./lib/LateralMenu.svelte";
-import * as d3 from "d3";
+  import * as d3 from "d3";
 
-import jQuery from 'jquery';
-import BasicStats from "./lib/BasicStats.svelte";
-import ScaleForm from "./lib/ScaleForm.svelte";
-import StoryButton from "./lib/StoryButton.svelte"
-import { create_scale2 } from "./lib/BasicStats.svelte";
-import { observable_data } from "./data/observable_data.js";
+  import jQuery from 'jquery';
+  import BasicStats from "./lib/BasicStats.svelte";
+  import ScaleForm from "./lib/ScaleForm.svelte";
+  import StoryButton from "./lib/StoryButton.svelte"
+  import { create_scale2 } from "./lib/BasicStats.svelte";
+  import { observable_data } from "./data/observable_data.js";
 
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-let years = [];
-let main_parties = [];
-let buttons_parties=[];
-$: selected_schema = "interpolateWarm";
-// let selectedYear = 2015; 
-// let selectedParty = "ERC";
 
-let selectedYear = ''; 
-let selectedParty = "";
+  let years = [];
+  let main_parties = [];
+  let buttons_parties=[];
+  $: selected_schema = "interpolateWarm";
+  // let selectedYear = 2015; 
+  // let selectedParty = "ERC";
 
-const createColorScale = (selected_schema, min, max) => {
-  return d3.scaleSequential(d3[selected_schema]).domain([min, max]);
-  //return d3.scaleSequential(d3[selected_schema]).domain([0, 100]);
-};
+  let selectedYear = ''; 
+  let selectedParty = "";
 
-const getYears = () => {
+  const createColorScale = (selected_schema, min, max) => {
+    return d3.scaleSequential(d3[selected_schema]).domain([min, max]);
+    //return d3.scaleSequential(d3[selected_schema]).domain([0, 100]);
+  };
 
-  years = [...new Set(observable_data.map((d) => d.year))];
-  years = years.sort((a, b) => a - b);
+  const getYears = () => {
 
-};
+    years = [...new Set(observable_data.map((d) => d.year))];
+    years = years.sort((a, b) => a - b);
 
-const getMainParties = () => {
-  /*    console.info(
-    observable_data.map(d=>d.year)
-  ) */
-  buttons_parties=main_parties.filter((d)=>
-  {
-    //,'Ciutadans','Podem'
-     return ['psc','vox','jxc','erc','cs','pp','cup'].indexOf(d.toLowerCase())>-1
-})
+  };
 
-  main_parties = [...new Set(observable_data.map((d) => d.main_party))];
-console.log(main_parties)
-  
-  //main_parties = main_parties.sort((a, b) => a - b);
-};
+  const getMainParties = () => {
+    /*    console.info(
+      observable_data.map(d=>d.year)
+    ) */
+    buttons_parties=main_parties.filter((d)=>
+    {
+      //,'Ciutadans','Podem'
+      return ['psc','vox','jxc','erc','cs','pp','cup'].indexOf(d.toLowerCase())>-1
+  })
 
-$: filtered_data = observable_data.filter(
-  (d) => d.year == parseInt(selectedYear) && d.main_party == selectedParty
-);
-
-$: f = filtered_data
-  .filter((d) => d.voted_proportion > 0)
-  .map((d) => d.voted_proportion);
-
-  
-$: stats = {
-  min: d3.min(f),
-  max: d3.max(f),
-  avg: d3.mean(f),
-};
-$:{
-  console.info(filtered_data)
-  console.warn(f,stats)
-
-}
-$: colorScale = createColorScale(selected_schema, stats.min, stats.max);
-
-$: console.log(filtered_data);
-
-//not dynamic when clicking on story buttons..
-/*
-$:max_voted_features_party=observable_data.filter((d2)=>
-  {
+    main_parties = [...new Set(observable_data.map((d) => d.main_party))];
+  console.log(main_parties)
     
-    return (d2.main_party==selectedParty && d2.year==selectedYear)
-  }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
-  */
-function getWhereWin(party,year)
-{
+    //main_parties = main_parties.sort((a, b) => a - b);
+  };
+
+  $: filtered_data = observable_data.filter(
+    (d) => d.year == parseInt(selectedYear) && d.main_party == selectedParty
+  );
+
+  $: f = filtered_data
+    .filter((d) => d.voted_proportion > 0)
+    .map((d) => d.voted_proportion);
+
+    
+  $: stats = {
+    min: d3.min(f),
+    max: d3.max(f),
+    avg: d3.mean(f),
+  };
+  $:{
+    console.info(filtered_data)
+    console.warn(f,stats)
+
+  }
+  $: colorScale = createColorScale(selected_schema, stats.min, stats.max);
+
+  $: console.log(filtered_data);
+
+  //not dynamic when clicking on story buttons..
+  /*
+  $:max_voted_features_party=observable_data.filter((d2)=>
+    {
+      
+      return (d2.main_party==selectedParty && d2.year==selectedYear)
+    }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
+    */
+  function getWhereWin(party,year)
+  {
 
   /* let r = d3.nest()
   .key(function(d) { return d.municipality_code; })
@@ -116,77 +117,126 @@ function getWhereWin(party,year)
     console.warn(r)
     return r
     //r.winning.filter(d=>d.party===party)
-}
-function story(main_party,year)
-    {
-      //console.log(getWhereWin('PP',2019))
-      console.log(arguments)
-      //selectedParty=main_party;
-        filtered_data=observable_data.filter((d2)=>
-        {
-          
-          return (d2.main_party==main_party && d2.year==year)
-        })
-        jQuery('.maplibregl-ctrl-bottom-right').show();
-        jQuery('.stories_container .story').hide();
-        let story_div=jQuery('.'+main_party.toLowerCase()+'_story');
-
-        story_div.find('h4').text(year);
-        
-        story_div.fadeIn('slow');
-
-      
-        let max_voted_features_party=observable_data.filter((d2)=>
-        {
-          
-          return (d2.main_party==main_party && d2.year==year)
-        }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
-        console.log(max_voted_features_party)
-        
-        let html=max_voted_features_party.map(d=>{
-          return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
-        }).join('')
-        html+='<span class="next_year">See 2019 results</span>'
-
-        story_div.find('ul').empty().append(html)
-        story_div.find('.next_year').on('click',function(){
-          story(main_party,2019)
-        })
   }
-  getMainParties();
-onMount(() => {
-  getYears();
-  getMainParties();
+  function story(main_party,year)
+      {
+        //console.log(getWhereWin('PP',2019))
+        console.log(arguments)
+        //selectedParty=main_party;
+          filtered_data=observable_data.filter((d2)=>
+          {
+            
+            return (d2.main_party==main_party && d2.year==year)
+          })
+          jQuery('.maplibregl-ctrl-bottom-right').show();
+          jQuery('.stories_container .story').hide();
+          let story_div=jQuery('.'+main_party.toLowerCase()+'_story');
 
-  setTimeout(() => {
-    selectedYear = 2015;
-    selectedParty = "ERC";
-  }, 500);
+          story_div.find('h4').text(year);
+          
+          story_div.fadeIn('slow');
 
-  
-  
-});
+        
+          let max_voted_features_party=observable_data.filter((d2)=>
+          {
+            
+            return (d2.main_party==main_party && d2.year==year)
+          }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
+          console.log(max_voted_features_party)
+          
+          let html=max_voted_features_party.map(d=>{
+            return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
+          }).join('')
+          html+='<span class="next_year">See 2019 results</span>'
+
+          story_div.find('ul').empty().append(html)
+          story_div.find('.next_year').on('click',function(){
+            story(main_party,2019)
+          })
+    }
+    getMainParties();
+  onMount(() => {
+    getYears();
+    getMainParties();
+
+    setTimeout(() => {
+      selectedYear = 2015;
+      selectedParty = "ERC";
+    }, 500);
+
+    
+    
+  });
 </script>
 <main>
   <header>
     <h1>Catalunya Municipal Elections</h1>
     <p>By Marina Rovira Boix, Joseph Ricafort, Pere Roca Ristol</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </header>
 
-  <BarChartLayer/>
-  
-  <MultiLineLayer />
 
   <!-- <Counter/> -->
     <h2>Introduction</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
-    <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-    <h2>Charts</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
-    <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-  <section class="maps">
+    <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose who will govern each of the country's councils. </p>
+    <br>
+
+    <p>The municipal elections, which are held every four years, are the ones that have the most impact on a day-to-day basis, because they serve to choose the representatives who will have the responsibility of adopting the policies most linked to the citizenry. The parties face them not only with the desire to take on the maximum number of mayors and representatives possible, but also as a platform to consolidate their local power.</p>
+    <br>
+    
+    <p>This project aims to explore a little bit the results of the recent years elections. We have used the last 5 years of information for all the municipalities from the government.
+      Although the data is fine, there was the need to include a new column. In this column we have added information about to which main party in Spanish/Catalan government all the little municipal parties are related to. This is due to, in the municipalities, usually the main parties have a party there, but in some towns, the name is not a clear relation.
+    </p>
+ 
+    <h2>Exploration</h2>
+ 
+    <p>With that said, let’s progress to discuss the data.First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
+    <p>Let’s consider this 4 groups for the parties:</p>
+      <!-- <ul>
+        <li><b>Right:</b> VOX, Ciutadans, PP</li>
+        <li><b>Moderate right:</b> JxCat, CIU</li>
+        <li><b>Moderate left:</b> ERC, PSC, PACMA</li>
+        <li><b>Left:</b> CUP, Podem</li>
+      </ul> -->
+      <dl>
+        <dt><b>Right:</b> VOX, Ciutadans, PP</dt>
+        <dt><b>Moderate right:</b> JxCat, CIU</dt>
+        <dt><b>Moderate left:</b> ERC, PSC, PACMA</dt>
+        <dt><b>Left:</b> CUP, Podem</dt>
+      </dl>
+    <br>
+
+    <img src="image.jpg" alt="background image" />
+
+    <p>From this chart, we can conclude that in the vast majority of Catalonia, people vote the most to the left related parties. However, the right parties have increased a little.</p>
+    <p>If we take a look at the progress of each party, the chart is the following.</p>
+    
+  
+    <MultiLineLayer />
+
+
+    <p>We can see one party that has decreased a lot, which is PSC, considered moderate left and the current party ruling in Spain alongside Podem, which has decreased a little bit but is always moving between 200k and 300k votes.</p>
+    <p>There’s also an increase in the Other category which includes all the municipal parties that couldn’t be related to the main ones. These are just local groups that exist only for the municipal elections, usually with people from that place that want to lead a change but not be related to a big party. The main reason is usually the association with the ideals of one of the great ones.</p>
+
+    <br>
+
+    <p>One curious case in the right parties section is Vox & Ciutadans, both were recently created (in the last 20 years) while others as PP or PSOE have been there since the 70s. In 2003 were new and they are both at 0 votes, but they have achieved around 23k votes. Ciutadans has always won more votes than VOX. However, they have an internal crisis right now so this might change in the future. What we can detect from the chart is that while both of them are rising votes, PP (which is the other one at the right side) is decreasing its numbers.</p>
+    <p>Hopefully this means that people who vote the right, stay in the right but the total number of people voting for them do not increase.</p>
+
+    <br>
+
+    <p>Last but not least, there’s a noticeable increase for JxCat and ERC, although one is moderate left and the other moderate right, are, alongside la CUP, the three parties defending Catalunya’s independence. Last year the three of them together got 43% of the total votes.</p>
+    <p>We can better see vote gains and losses between 2015 and 2019.</p>
+
+    <BarChartLayer/>
+
     <h2>Maps</h2>
+
+    <p>After the exploratory analysis, below you’ll find a map that provides a deeper inside in the municipality's results.</p>
+    <br>
+    <p>The results for 2015 and 2019 can be explored in more detail. There are stories that are easily visible given the drastic increase (ERC/JxCAT) or decrease (PP/CUP) in votes. 
+      For cases such as the PSC where the increase is more general, winning votes distributed among many municipalities, it allows us to see in more detail what these municipalities are.
+      
+    </p>
     <div class="forms">
      <LateralMenu bind:selectedYear {years} />
      
@@ -226,13 +276,15 @@ onMount(() => {
   {/if}
   
 
-  
-  </section>
-  <section class="stats-analyis">
+  <br>
+  <br>
     <h2>Stats Analysis</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
-    <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-  </section>
+    <p>Preliminary analysis of the stats was done using R and Observable</p>
+    <a href="https://observablehq.com/d/7eb01f000c28ad2e">Observable notebook</a><br>
+    <a href="https://rpubs.com/josephricafort/catalunyaelections">R stats</a>
+    <br>
+    <p>Finally, we want to thank Anton and Mat for their help with the development of this project </p>
+
 </main>
 
 <style>
