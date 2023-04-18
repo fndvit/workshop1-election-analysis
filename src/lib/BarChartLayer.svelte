@@ -8,19 +8,21 @@
     label: d.main_party,
     losses: d.lost,
     gains: d.gained,
+    no_change: d.no_change,
   }));
   onMount(() => {
     const margin = { top: 50, right: 20, bottom: 10, left: 110 };
-    const width = 800 - margin.left - margin.right;
+    const width = 1400 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
     const y = d3.scaleBand().rangeRound([0, height]).padding(0.3);
     const x = d3.scaleLinear().rangeRound([0, width]);
     const legendLabels = new Map();
     legendLabels.set("losses", "Losses");
+    legendLabels.set("no_change", "Hold");
     legendLabels.set("gains", "Gains");
     const color = d3
       .scaleOrdinal()
-      .range(["#C4140A", "#0ABAC4"])
+      .range(["#C4140A","#a8a2a2", "#0ABAC4"])
       .domain(Array.from(legendLabels.keys()));
     const xAxis = d3.axisTop().scale(x);
     const yAxis = d3.axisLeft().scale(y);
@@ -46,8 +48,11 @@
       });
       return d;
     });
+    //console.log(data.length)
     const minValue = d3.min(data, (d) => d.boxes[0].x0);
     const maxValue = d3.max(data, (d) => d.boxes[d.boxes.length - 1].x1);
+    console.log(minValue)
+    console.log(maxValue)
     const absoluteExtremeValue = Math.max(
       Math.abs(minValue),
       Math.abs(maxValue)
@@ -104,6 +109,17 @@
     const startp = svg.append("g").attr("class", "legendbox");
     // this is not nice, we should calculate the bounding box and use that
     const legend_tabs = [0, 120, 200, 375, 450];
+
+    const tooltip = d3.select('body') 
+      .append('div')
+      .style('position', 'absolute')
+      .style('z-index', '1')
+      .style('visibility', 'hidden')
+      .style('padding', '10px')
+      .style('background', 'rgba(0,0,0,0.6)')
+      .style('border-radius', '4px')
+      .style('color', '#fff');
+
     const legend = startp
       .selectAll(".legend")
       .data(color.domain().slice())
@@ -111,12 +127,14 @@
       .append("g")
       .attr("class", "legend")
       .attr("transform", (d, i) => `translate(${legend_tabs[i]},-45)`);
+    
     legend
       .append("rect")
       .attr("x", 0)
       .attr("width", 18)
       .attr("height", 18)
       .style("fill", color);
+      
     legend
       .append("text")
       .attr("x", 22)
@@ -135,6 +153,7 @@
       .style("fill", "none")
       .style("stroke", "#000")
       .style("shape-rendering", "crispEdges");
+  
     setTimeout(() => {
       const movesize = width / 2 - startp.node().getBBox().width / 2;
       svg.selectAll(".legendbox").attr("transform", `translate(${movesize},0)`);
