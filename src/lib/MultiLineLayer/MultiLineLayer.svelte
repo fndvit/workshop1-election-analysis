@@ -1,7 +1,6 @@
 <script>
     import { onMount } from "svelte";
     // import fiveYearsNorm from "../../data/fiveyears_norm.json"
-    import dataVotes from "../../data/fiveyears_votes.json"
     import dataCouncilors from "../../data/fiveyears_councilors.json"
 
     import { LayerCake, ScaledSvg, Html, flatten } from 'layercake';
@@ -13,6 +12,7 @@
     import AxisX from './AxisX.html.svelte';
     import AxisY from './AxisY.html.svelte';
     import GroupLabels from './GroupLabels.html.svelte';
+    import Key from './Key.html.svelte';
     import SharedTooltip from './SharedTooltip.percent-range.html.svelte';
   
     // This example loads csv data as json using @rollup/plugin-dsv
@@ -27,18 +27,20 @@
     /* --------------------------------------------
      * Set what is our x key to separate it from the other series
      */
+    export let inputData;
+    export let colors;
 
     let eVarSel;
     let elecVars = ["votes_sum", "councilors_mean"];
 
-    let data = dataVotes
+     let data = inputData;
 
     const xKey = 'year';
     const yKey = 'councilors_mean';
     const zKey = 'main_party';
   
     const seriesNames = Object.keys(data[0]).filter(d => d !== xKey);
-    const seriesColors = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
+    const seriesColors = colors;//['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
   
     //const parseDate = timeParse('%Y-%m-%d');
     const parseDate = timeParse('%d-%m-%Y');
@@ -130,5 +132,11 @@
           dataset={data}
         />
       </Html>
+      <Html pointerEvents={false}>
+        <Key
+          align='end'
+          shape='circle'
+       />
+      </Html>  
     </LayerCake>
   </div>

@@ -5,12 +5,14 @@
   import LateralMenu from "./lib/LateralMenu.svelte";
   import * as d3 from "d3";
 
-  import jQuery from 'jquery';
-  import BasicStats from "./lib/BasicStats.svelte";
-  import ScaleForm from "./lib/ScaleForm.svelte";
-  import StoryButton from "./lib/StoryButton.svelte"
-  import { create_scale2 } from "./lib/BasicStats.svelte";
-  import { observable_data } from "./data/observable_data.js";
+import jQuery from 'jquery';
+import BasicStats from "./lib/BasicStats.svelte";
+import ScaleForm from "./lib/ScaleForm.svelte";
+import StoryButton from "./lib/StoryButton.svelte"
+import { create_scale2 } from "./lib/BasicStats.svelte";
+import { observable_data } from "./data/observable_data.js";
+import dataVotes from "./data/fiveyears_votes.json"
+import dataVotesLeftRight from "./data/fiveyears_votesLeftRight.json"
 
   import { onMount } from "svelte";
 
@@ -22,8 +24,12 @@
   // let selectedYear = 2015; 
   // let selectedParty = "ERC";
 
-  let selectedYear = ''; 
-  let selectedParty = "";
+let selectedYear = ''; 
+let selectedParty = "";
+
+const multilineColors1 = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
+const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
+
 
   const createColorScale = (selected_schema, min, max) => {
     return d3.scaleSequential(d3[selected_schema]).domain([min, max]);
@@ -174,6 +180,13 @@
     <p>By Marina Rovira Boix, Joseph Ricafort, Pere Roca Ristol</p>
   </header>
 
+  <BarChartLayer/>
+  
+  <MultiLineLayer inputData={dataVotes} colors={multilineColors1}/>
+
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+  <MultiLineLayer inputData={dataVotesLeftRight}  colors={multilineColors2}/>
 
   <!-- <Counter/> -->
     <h2>Introduction</h2>
