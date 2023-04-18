@@ -1,12 +1,12 @@
 <script>
   import BarChartLayer from './lib/BarChartLayer.svelte';
   import MultiLineLayer from './lib/MultiLineLayer/MultiLineLayer.svelte';
-  import Map from "./components/Map.svelte";
-  import LateralMenu from "./components/LateralMenu.svelte";
+  import Map from "./lib/Map.svelte";
+  import LateralMenu from "./lib/LateralMenu.svelte";
   import * as d3 from "d3";
   /* import BasicStats from "./components/BasicStats.svelte"; */
-  import ScaleForm from "./components/ScaleForm.svelte";
-  import { create_scale2 } from "./components/BasicStats.svelte";
+  import ScaleForm from "./lib/ScaleForm.svelte";
+  import { create_scale2 } from "./lib/BasicStats.svelte";
   import { observable_data } from "./data/observable_data.js";
 
   import { onMount } from "svelte";
