@@ -333,7 +333,7 @@ story('VOX',2019)
 
 
 
-console.info(filtered_data)
+
       if (!filtered_data || !_f) 
       { 
         console.warn('no data')
@@ -352,7 +352,7 @@ console.info(filtered_data)
                   if (String(d.municipality_code)==String(_f.target.__data__.properties.codiine))
                   {
                     
-                    console.warn(String(d.municipality_code)==String(_f.target.__data__.properties.codiine));
+                  //  console.warn(String(d.municipality_code)==String(_f.target.__data__.properties.codiine));
                  return d;
                  //String(d.municipality_code)==String(_f.target.__data__.properties.codiine)
                   }
@@ -375,7 +375,7 @@ console.info(filtered_data)
         var y = e.originalEvent.clientY
         
 
-        console.warn(x, y)
+        //console.warn(x, y)
             
         municipi_popup.setLngLat(latlng)
         

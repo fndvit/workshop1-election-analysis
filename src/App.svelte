@@ -4,6 +4,7 @@
   import Map from "./lib/Map.svelte";
   import LateralMenu from "./lib/LateralMenu.svelte";
 import * as d3 from "d3";
+
 import jQuery from 'jquery';
 import BasicStats from "./lib/BasicStats.svelte";
 import ScaleForm from "./lib/ScaleForm.svelte";
@@ -84,32 +85,41 @@ $:max_voted_features_party=observable_data.filter((d2)=>
   */
 function getWhereWin(party,year)
 {
-  let r=observable_data.reduce(function(memo,data,i)
-    {
-      if (memo.munis.indexOf(data.municipality_code)==-1)
-      {
-        memo.winning.push({code:data.municipality_code,prop:data.voted_proportion,party:data.main_party});
-        memo.munis.push(data.municipality_code)
-      }
-      else
-      {
-        for (var p in memo.winning)
-        {
-          if (memo.winning[p].municipality_code==data.municipality_code && data.voted_proportion>memo.winning[p].prop)
-          {
-            memo.winning[p].party=data.main_party;
-            memo.winning[p].prop=data.voted_proportion;
-          }
-        }
-      }
-    return memo
+
+  /* let r = d3.nest()
+  .key(function(d) { return d.municipality_code; })
+  .entries(observable_data.filter(d=>d.year==year)); */
+
+  // let r=observable_data.filter(d=>d.year==year).reduce(function(memo,data,i)
+  //   {
+  //     let pos=memo.munis.indexOf(data.municipality_code);
+  //     if (pos==-1)
+  //     {
+  //       memo.winning.push({code:data.municipality_code,prop:data.voted_proportion,party:data.main_party});
+  //       memo.munis.push(data.municipality_code)
+  //     }
+  //     else
+  //     {
+  //       for (var p in memo.winning)
+  //       {
+  //         if (memo.winning[p].municipality_code==data.municipality_code && data.voted_proportion>memo.winning[pos].prop)
+  //         {
+  //           memo.winning[pos].party=data.main_party;
+  //           memo.winning[pos].prop=data.voted_proportion;
+  //         }
+  //       }
+  //     }
+  //   return memo
       
-    },{munis:[],winning:[]})
+  //   },{munis:[],winning:[]})
+    let r='test'
     console.warn(r)
-    return r.winning.filter(d=>d.party===party)
+    return r
+    //r.winning.filter(d=>d.party===party)
 }
 function story(main_party,year)
     {
+      //console.log(getWhereWin('PP',2019))
       console.log(arguments)
       //selectedParty=main_party;
         filtered_data=observable_data.filter((d2)=>
