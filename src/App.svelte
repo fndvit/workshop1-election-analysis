@@ -291,7 +291,7 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
     <a href="https://observablehq.com/d/7eb01f000c28ad2e">Observable notebook</a><br>
     <a href="https://rpubs.com/josephricafort/catalunyaelections">R stats</a>
     <br>
-    <p>Finally, we want to thank Anton and Mat for their help with the development of this project </p>
+    <p>Finally, we want to thank Anton Bardera and Matt Osborn for their help with the development of this project </p>
 
 </main>
 
