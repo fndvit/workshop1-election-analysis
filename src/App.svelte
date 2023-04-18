@@ -28,7 +28,7 @@ let selectedYear = '';
 let selectedParty = "";
 
 const multilineColors1 = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
-const multilineColors2 = ['#7b3294','#c2a5cf','#a6dba0','#008837'];
+const multilineColors2 = ['#008837','#a6dba0','#c2a5cf','#7b3294'];
 
 
   const createColorScale = (selected_schema, min, max) => {
