@@ -38,9 +38,10 @@
     const zKey = 'main_party';
   
     const seriesNames = Object.keys(data[0]).filter(d => d !== xKey);
-    const seriesColors = ['#ffe4b8', '#ffb3c0', '#ff7ac7', '#ff00cc', '#ffe4b8'];
+    const seriesColors = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
   
-    const parseDate = timeParse('%Y-%m-%d');
+    //const parseDate = timeParse('%Y-%m-%d');
+    const parseDate = timeParse('%d-%m-%Y');
   
     /* --------------------------------------------
      * Create a "long" format that is a grouped series of data points
@@ -53,6 +54,7 @@
         values: data.map(d => {
           // Put this in a conditional so that we don't recast the data on second render
           d[xKey] = typeof d[xKey] === 'string' ? parseDate(d[xKey]) : d[xKey];
+          //d[xKey] = typeof d[xKey] === 'string' ? +d[xKey] : d[xKey];
           return {
             [yKey]: +d[key],
             [xKey]: d[xKey],
@@ -62,7 +64,8 @@
       };
     });
   
-    const formatTickX = timeFormat('%b. %e');
+    const formatTickX = timeFormat('%Y');
+    //const formatTickX = d => d;
     const formatTickY = d => format(`.${precisionFixed(d)}s`)(d);
   </script>
   
@@ -105,9 +108,10 @@
       <Html>
         <AxisX
           gridlines={false}
-          ticks={data.map(d => d[xKey]).sort((a, b) => (+a) - (+b))}
+          ticks={data.map(d => d[xKey]).sort((a, b) => a - b)}
           snapTicks={true}
           tickMarks={true}
+          formatTick={formatTickX}
         />
         <AxisY
           baseline={true}
@@ -120,8 +124,8 @@
       </ScaledSvg>
   
       <Html>
-        <GroupLabels/>
-         <SharedTooltip
+<!--          <GroupLabels/>  -->
+        <SharedTooltip
           formatTitle={formatTickX}
           dataset={data}
         />
