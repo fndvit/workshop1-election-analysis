@@ -15,6 +15,7 @@ import { onMount } from "svelte";
 
 let years = [];
 let main_parties = [];
+let buttons_parties=[];
 $: selected_schema = "interpolateWarm";
 // let selectedYear = 2015; 
 // let selectedParty = "ERC";
@@ -38,7 +39,13 @@ const getMainParties = () => {
   /*    console.info(
     observable_data.map(d=>d.year)
   ) */
+  buttons_parties=main_parties.filter((d)=>
+  {
+     return ['psc','vox','jxc','erc','cs','pp','cup'].indexOf(d.toLowerCase())>-1
+})
+
   main_parties = [...new Set(observable_data.map((d) => d.main_party))];
+
   
   //main_parties = main_parties.sort((a, b) => a - b);
 };
@@ -74,8 +81,35 @@ $:max_voted_features_party=observable_data.filter((d2)=>
     return (d2.main_party==selectedParty && d2.year==selectedYear)
   }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
   */
+function getWhereWin(party,year)
+{
+  let r=observable_data.reduce(function(memo,data,i)
+    {
+      if (memo.munis.indexOf(data.municipality_code)==-1)
+      {
+        memo.winning.push({code:data.municipality_code,prop:data.voted_proportion,party:data.main_party});
+        memo.munis.push(data.municipality_code)
+      }
+      else
+      {
+        for (var p in memo.winning)
+        {
+          if (memo.winning[p].municipality_code==data.municipality_code && data.voted_proportion>memo.winning[p].prop)
+          {
+            memo.winning[p].party=data.main_party;
+            memo.winning[p].prop=data.voted_proportion;
+          }
+        }
+      }
+    return memo
+      
+    },{munis:[],winning:[]})
+    console.warn(r)
+    return r.winning.filter(d=>d.party===party)
+}
 function story(main_party,year)
     {
+      console.log(arguments)
       //selectedParty=main_party;
         filtered_data=observable_data.filter((d2)=>
         {
@@ -84,21 +118,31 @@ function story(main_party,year)
         })
         jQuery('.maplibregl-ctrl-bottom-right').show();
         jQuery('.stories_container .story').hide();
-        let story_div=jQuery('.'+main_party.toLowerCase()+'_story')
+        let story_div=jQuery('.'+main_party.toLowerCase()+'_story');
+
+        story_div.find('h4').text(year);
+        
         story_div.fadeIn('slow');
+
+      
         let max_voted_features_party=observable_data.filter((d2)=>
         {
           
           return (d2.main_party==main_party && d2.year==year)
         }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
         console.log(max_voted_features_party)
-        let html='<h3>Max voted proportion municipalities</h3>';
-        html+=max_voted_features_party.map(d=>{
+        
+        let html=max_voted_features_party.map(d=>{
           return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
         }).join('')
+        html+='<span class="next_year">See 2019 results</span>'
 
         story_div.find('ul').empty().append(html)
+        story_div.find('.next_year').on('click',function(){
+          story(main_party,2019)
+        })
   }
+  getMainParties();
 onMount(() => {
   getYears();
   getMainParties();
@@ -156,21 +200,22 @@ onMount(() => {
       {/if} 
     
     
-    <Map {filtered_data} {colorScale}  />
+    <Map {filtered_data} {colorScale} />
     {#if filtered_data.length > 0}
-    <StoryButton class="primary sm" on:click={()=>story('PSC',2019)}>
-      PSC story, 2019
-    </StoryButton>
 
-    <StoryButton class="primary sm" on:click={()=>story('VOX',2019)}>
-      VOX story
-    </StoryButton>
+    
+    {#each buttons_parties as party}
+    <StoryButton class="primary sm" on:click={()=>story({party}.party,2015)}>
+      {party} story
+    </StoryButton> 
+   
+   {/each} 
 
-    <ScaleForm
+  <!--   <ScaleForm
       bind:selected_schema
       sel_schema="selected_schema"
       on:change={create_scale2(selected_schema, filtered_data)}
-    />
+    /> -->
   {/if}
   
 
@@ -184,6 +229,14 @@ onMount(() => {
 </main>
 
 <style>
+
+  :global(.next_year)
+  {
+    margin-top: 5px;
+    color:orange;
+    cursor: pointer;
+    
+  }
       .forms
     {
         display: grid;
@@ -195,9 +248,11 @@ onMount(() => {
     z-index: 99999999;
     
 }
-:global(ul)
+
+:global(.story ul)
 {
   list-style-type: none;
+  padding: 5px;
 }
 :global(.stories_container)
 {
@@ -206,6 +261,7 @@ onMount(() => {
   grid-gap: 10px;
   padding: 10px;
   overflow-y: auto;
+  width:135px;
     height: 300px;
     border: 1px solid grey;
 }
@@ -213,10 +269,13 @@ onMount(() => {
 {
   max-width: 25%;
 }
-
-:global(.maplibregl-ctrl-bottom-right)
+:global(.maplibregl-control-container)
 {
   z-index: 99999;
+}
+:global(.maplibregl-ctrl-bottom-right)
+{
+  
     background: #242424;
     display: none;
     max-width: 25%;

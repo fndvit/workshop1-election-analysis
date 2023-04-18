@@ -10,7 +10,7 @@
 
   import { munis } from "../data/municipis.js";
   import { observable_data } from "../data/observable_data.js";
-
+  /* import  {story} from '../App.svelte'; */
   export let filtered_data;
   export let colorScale;
   
@@ -43,9 +43,9 @@
     
     featureElements
       .transition()
-      .duration(550)
+      .duration(450)
       .delay(function (d, i) {
-        return i * 5;
+        return i * 2;
       })
 
       .attr("fill", function (d, i) {
@@ -59,6 +59,36 @@
         }
       });
   }
+
+  function story(main_party,year)
+    {
+      //selectedParty=main_party;
+        filtered_data=observable_data.filter((d2)=>
+        {
+          
+          return (d2.main_party==main_party && d2.year==year)
+        })
+        console.warn(filtered_data)
+        jQuery('.maplibregl-ctrl-bottom-right').show();
+        jQuery('.stories_container .story').hide();
+        let story_div=jQuery('.'+main_party.toLowerCase()+'_story')
+        story_div.fadeIn('slow');
+
+      
+        let max_voted_features_party=observable_data.filter((d2)=>
+        {
+          
+          return (d2.main_party==main_party && d2.year==year)
+        }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
+        console.log(max_voted_features_party)
+        
+        let html=max_voted_features_party.map(d=>{
+          return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
+        }).join('')
+
+        story_div.find('ul').empty().append(html)
+  }
+  
   onMount(() => {
     const data = [];
     console.warn(filtered_data);
@@ -106,7 +136,11 @@
 
 
     map.scrollZoom.disable();
-    
+   /*  setTimeout(function()
+    {
+      
+story('VOX',2019)
+    },3000) */
    
 
     map.addControl(new NavigationControl(), "top-right");
@@ -132,10 +166,16 @@
             map.addControl(stories_ctrl_, 'bottom-right');
             
             jQuery('.stories_ctrl').addClass('mapboxgl-ctrl');
+            let html='<div class="stories_container">'
+            html+=['psc','vox','jxc','erc','cs','pp','cup'].map((d)=>{
 
-            jQuery('.stories_ctrl').append('<div class="stories_container">'
-              +'<div class="story psc_story"><h2>PSC: a declining party</h2><ul></ul></div><div class="story vox_story"><h2>VOX: a new extreme-right rising party</h2><ul></ul>'
-                +'</div></div>')
+              return '<div class="story '+d+'_story"><h2>'+d.toUpperCase()+'</h2><h4></h4><span>Max voted proportion municipalities</span><ul></ul></div>';
+            }).join('')
+            html+='</div>';
+            jQuery('.stories_ctrl').append(html);
+           /*  jQuery('.stories_ctrl').append('<div class="stories_container">'
+              +'<div class="story psc_story"><h2>PSC: a declining party</h2><span>Max voted proportion municipalities</span><ul></ul></div><div class="story vox_story"><h2>VOX: a new extreme-right rising party</h2><span>Max voted proportion municipalities</span><ul></ul>'
+                +'</div></div>') */
     function update() {
       featureElements = svg.selectAll("path.municipi");
       //featureElements.raise();
@@ -223,8 +263,8 @@
         })
         .on('mouseenter', function(d) {
           console.warn(d)
-          d3.selectAll('path.municipi').attr('opacity', .6) 
-         d3.select(this).attr('opacity', 1)
+         /*  d3.selectAll('path.municipi').attr('opacity', .6) 
+         d3.select(this).attr('opacity', 1) */
          
          
            _f=d;
