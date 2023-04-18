@@ -180,14 +180,7 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
     <p>By Marina Rovira Boix, Joseph Ricafort, Pere Roca Ristol</p>
   </header>
 
-  <BarChartLayer/>
   
-  <MultiLineLayer inputData={dataVotes} colors={multilineColors1}/>
-
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-  <MultiLineLayer inputData={dataVotesLeftRight}  colors={multilineColors2}/>
-
   <!-- <Counter/> -->
     <h2>Introduction</h2>
     <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose who will govern each of the country's councils. </p>
@@ -196,13 +189,15 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
     <p>The municipal elections, which are held every four years, are the ones that have the most impact on a day-to-day basis, because they serve to choose the representatives who will have the responsibility of adopting the policies most linked to the citizenry. The parties face them not only with the desire to take on the maximum number of mayors and representatives possible, but also as a platform to consolidate their local power.</p>
     <br>
     
-    <p>This project aims to explore a little bit the results of the recent years elections. We have used the last 5 years of information for all the municipalities from the government.
-      Although the data is fine, there was the need to include a new column. In this column we have added information about to which main party in Spanish/Catalan government all the little municipal parties are related to. This is due to, in the municipalities, usually the main parties have a party there, but in some towns, the name is not a clear relation.
+    <p>This project aims to explore a little bit the results of the recent years elections. We have used the last 5 years of information for all the municipalities.
+      Although the data is fine, there was the need to include a new column about to which main party in Spanish/Catalan government all the little municipal parties are related to. 
+      This is due to, in the municipalities, usually the main parties have a party there, but in some towns, the name is not a clear relation.
     </p>
  
     <h2>Exploration</h2>
  
-    <p>With that said, let’s progress to discuss the data.First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
+    <p>With that said, let’s progress to discuss the data. </p>
+    <p>First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
     <p>Let’s consider this 4 groups for the parties:</p>
       <!-- <ul>
         <li><b>Right:</b> VOX, Ciutadans, PP</li>
@@ -217,27 +212,28 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
         <dt><b>Left:</b> CUP, Podem</dt>
       </dl>
     <br>
+    <MultiLineLayer inputData={dataVotesLeftRight}  colors={multilineColors2}/>
 
-    <img src="image.jpg" alt="background image" />
 
-    <p>From this chart, we can conclude that in the vast majority of Catalonia, people vote the most to the left related parties. However, the right parties have increased a little.</p>
-    <p>If we take a look at the progress of each party, the chart is the following.</p>
+
+    <p>From this graph, we can conclude that in the vast majority of Catalonia, people vote more for left-wing parties. However, the correct matches have increased a bit.</p>
+    <p>If we take a look at the evolution of each match, the graph is as follows.</p>
     
   
-    <MultiLineLayer />
+    <MultiLineLayer inputData={dataVotes} colors={multilineColors1}/>
 
 
-    <p>We can see one party that has decreased a lot, which is PSC, considered moderate left and the current party ruling in Spain alongside Podem, which has decreased a little bit but is always moving between 200k and 300k votes.</p>
-    <p>There’s also an increase in the Other category which includes all the municipal parties that couldn’t be related to the main ones. These are just local groups that exist only for the municipal elections, usually with people from that place that want to lead a change but not be related to a big party. The main reason is usually the association with the ideals of one of the great ones.</p>
-
-    <br>
-
-    <p>One curious case in the right parties section is Vox & Ciutadans, both were recently created (in the last 20 years) while others as PP or PSOE have been there since the 70s. In 2003 were new and they are both at 0 votes, but they have achieved around 23k votes. Ciutadans has always won more votes than VOX. However, they have an internal crisis right now so this might change in the future. What we can detect from the chart is that while both of them are rising votes, PP (which is the other one at the right side) is decreasing its numbers.</p>
-    <p>Hopefully this means that people who vote the right, stay in the right but the total number of people voting for them do not increase.</p>
+    <p>We can see a party that has dropped a lot, which is the PSC, considered moderate left and the current party that governs in Spain alongside Podemos, which has dropped a little but is always between 200,000 and 300,000 votes.</p>
+    <p>The Others category is also increased, which includes all the municipal parties that could not be related to the main ones. These are just local groups that exist only for municipal elections, usually with people from that place who want to lead change but not be associated with a major party. The main reason is usually the association with the ideals of one of the elders.</p>
 
     <br>
 
-    <p>Last but not least, there’s a noticeable increase for JxCat and ERC, although one is moderate left and the other moderate right, are, alongside la CUP, the three parties defending Catalunya’s independence. Last year the three of them together got 43% of the total votes.</p>
+    <p>A curious case in the correct parties section is Vox & Ciutadans, both recently created (in the last 20 years) while others like PP or PSOE have been around since the 70s. They were new in 2003 and both are in 0 votes, but they got about 23,000 votes. Ciutadans has always won more votes than VOX. However, they are having an internal crisis at the moment, so this could change in the future. What we can detect from the graph is that while both are increasing votes, the PP (which is the other one on the right) is decreasing its numbers.</p>
+    <p>Hopefully this means that the people who vote well stay on the right, but the total number of people who vote for them does not increase.</p>
+
+    <br>
+
+    <p>Finally, but not least, there is a notable increase in JxCat and ERC, although one moderate left and the other moderate right, they are, along with the CUP, the three parties that defend the independence of Catalonia. Last year all three together got 43% of the total votes.</p>
     <p>We can better see vote gains and losses between 2015 and 2019.</p>
 
     <BarChartLayer/>
@@ -246,9 +242,8 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
 
     <p>After the exploratory analysis, below you’ll find a map that provides a deeper inside in the municipality's results.</p>
     <br>
-    <p>The results for 2015 and 2019 can be explored in more detail. There are stories that are easily visible given the drastic increase (ERC/JxCAT) or decrease (PP/CUP) in votes. 
-      For cases such as the PSC where the increase is more general, winning votes distributed among many municipalities, it allows us to see in more detail what these municipalities are.
-      
+    <p>TThe 2015 and 2019 results can be explored in more detail. There are stories that are easily seen in the face of the drastic increase (ERC/JxCAT) or decrease (PP/CUP) of votes.
+      For cases like the PSC where the increase is more general, winning votes distributed among many municipalities, it allows us to see in more detail which these municipalities are.
     </p>
     <div class="forms">
      <LateralMenu bind:selectedYear {years} />
