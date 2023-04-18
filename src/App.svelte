@@ -199,19 +199,14 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
     <p>With that said, let’s progress to discuss the data. </p>
     <p>First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
     <p>Let’s consider this 4 groups for the parties:</p>
-      <!-- <ul>
-        <li><b>Right:</b> VOX, Ciutadans, PP</li>
-        <li><b>Moderate right:</b> JxCat, CIU</li>
-        <li><b>Moderate left:</b> ERC, PSC, PACMA</li>
-        <li><b>Left:</b> CUP, Podem</li>
-      </ul> -->
+
       <dl>
         <dt><b>Right:</b> VOX, Ciutadans, PP</dt>
         <dt><b>Moderate right:</b> JxCat, CIU</dt>
         <dt><b>Moderate left:</b> ERC, PSC, PACMA</dt>
         <dt><b>Left:</b> CUP, Podem</dt>
       </dl>
-    <br>
+
     <MultiLineLayer inputData={dataVotesLeftRight}  colors={multilineColors2}/>
 
 
@@ -234,7 +229,7 @@ const multilineColors2 = ['#000', '#444','#888','#aaa','#ccc','#aaa','#00ff7f','
     <br>
 
     <p>Finally, but not least, there is a notable increase in JxCat and ERC, although one moderate left and the other moderate right, they are, along with the CUP, the three parties that defend the independence of Catalonia. Last year all three together got 43% of the total votes.</p>
-    <p>We can better see vote gains and losses between 2015 and 2019.</p>
+    <p>We can better see the gains and losses of councilors between 2015 and 2019.</p>
 
     <BarChartLayer/>
 
