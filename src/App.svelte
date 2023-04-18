@@ -41,11 +41,12 @@ const getMainParties = () => {
   ) */
   buttons_parties=main_parties.filter((d)=>
   {
+    //,'Ciutadans','Podem'
      return ['psc','vox','jxc','erc','cs','pp','cup'].indexOf(d.toLowerCase())>-1
 })
 
   main_parties = [...new Set(observable_data.map((d) => d.main_party))];
-
+console.log(main_parties)
   
   //main_parties = main_parties.sort((a, b) => a - b);
 };
@@ -269,7 +270,7 @@ onMount(() => {
 {
   max-width: 25%;
 }
-:global(.maplibregl-control-container)
+:global(.maplibregl-control-container,.maplibregl-ctrl-top-right)
 {
   z-index: 99999;
 }
