@@ -6,6 +6,7 @@
     let f = filtered_data
       .filter((d) => d.voted_proportion > 0)
       .map((d) => d.voted_proportion);
+
     let stats = {
       min: d3.min(f),
       max: d3.max(f),
@@ -19,7 +20,6 @@
 
     svg.style("width", svg_width + "px");
     svg.style("height", "30px");
-    
 
     var defs = svg.append("defs");
     var gradient = defs
@@ -40,8 +40,7 @@
       })
       .attr("stop-color", function (d, i) {
         if (i < 10) console.warn(i, colorScale(i));
-        return colorScale(i)
-        
+        return colorScale(i);
       });
     var rect = svg
       .append("rect")
@@ -66,7 +65,7 @@
     });
 
     let xValues = domain; //.map((d)=>String(d));
-    
+
     var xScale = d3
       .scaleLinear()
 
@@ -127,13 +126,11 @@
     <li>Avg: {stats.avg.toFixed(2)}</li>
   </ul>
   <div class="scale_container">
-    
     <svg bind:this={scaleSvgEl} />
   </div>
 </section>
 
 <style>
-
   path.domain,
   line {
     opacity: 0;
@@ -147,8 +144,7 @@
     display: inline-block;
     margin: 0 10px;
   }
-  ul 
-  {
+  ul {
     display: inline-flex;
     list-style: none;
   }

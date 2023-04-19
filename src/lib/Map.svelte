@@ -1,27 +1,24 @@
-
 <script context="module"></script>
+
 <script>
   import { onMount, onDestroy } from "svelte";
-  import { getContext, createEventDispatcher } from "svelte";
-  import { Map, NavigationControl, Popup, Marker, LngLat } from "maplibre-gl";
+  import { Map, NavigationControl, Popup, LngLat } from "maplibre-gl";
   import "maplibre-gl/dist/maplibre-gl.css";
   import * as d3 from "d3";
-  import jQuery from 'jquery';
+  import jQuery from "jquery";
 
   import { munis } from "../data/municipis.js";
   import { observable_data } from "../data/observable_data.js";
-  /* import  {story} from '../App.svelte'; */
   export let filtered_data;
   export let colorScale;
-  
 
-  export let _f;
-  let hideTooltip = false;
-	
-	//const dispatch = createEventDispatcher();
+  export let selectedParty;
+  export let selectedYear;
+  export let showOverlay;
+
+  let _f;
 
   let map;
-  let mapContainer;
   let svg;
   let featureElements;
 
@@ -35,12 +32,12 @@
   let path = d3.geoPath().projection(transform);
 
   let first_update = true;
-  
+
   $: if (filtered_data.length > 0 && featureElements) {
     console.warn(filtered_data);
-    
+
     let arr = filtered_data.map((d) => d.municipality_code);
-    
+
     featureElements
       .transition()
       .duration(450)
@@ -50,7 +47,7 @@
 
       .attr("fill", function (d, i) {
         let codiine = String(d.properties.codiine);
-        let pos=arr.indexOf(codiine);
+        let pos = arr.indexOf(codiine);
         if (pos > -1) {
           //console.warn(filtered_data[pos].voted_proportion,colorScale(filtered_data[pos].voted_proportion))
           return colorScale(filtered_data[pos].voted_proportion);
@@ -60,35 +57,6 @@
       });
   }
 
-  function story(main_party,year)
-    {
-      //selectedParty=main_party;
-        filtered_data=observable_data.filter((d2)=>
-        {
-          
-          return (d2.main_party==main_party && d2.year==year)
-        })
-        console.warn(filtered_data)
-        jQuery('.maplibregl-ctrl-bottom-right').show();
-        jQuery('.stories_container .story').hide();
-        let story_div=jQuery('.'+main_party.toLowerCase()+'_story')
-        story_div.fadeIn('slow');
-
-      
-        let max_voted_features_party=observable_data.filter((d2)=>
-        {
-          
-          return (d2.main_party==main_party && d2.year==year)
-        }).sort((a,b)=>b.voted_proportion-a.voted_proportion).slice(0,5);
-        console.log(max_voted_features_party)
-        
-        let html=max_voted_features_party.map(d=>{
-          return '<li>'+d.municipality+':'+'<span class="voted_proportion">'+d.voted_proportion+'</span></li>'
-        }).join('')
-
-        story_div.find('ul').empty().append(html)
-  }
-  
   onMount(() => {
     const data = [];
     console.warn(filtered_data);
@@ -126,75 +94,54 @@
       //center: [141.15448379999998, 39.702053　],
       zoom: 4,
       //maxBounds:[[-0.665553,40.45029], [2.276123,42.462188]],
-      maxBounds:[[-0.37,40.3], [3.6,42.8]],
+      maxBounds: [
+        [-0.37, 40.3],
+        [3.6, 42.8],
+      ],
 
       attributionControl: false,
     });
 
-
-
-
-
     map.scrollZoom.disable();
-   /*  setTimeout(function()
+    /*  setTimeout(function()
     {
       
 story('VOX',2019)
     },3000) */
-   
 
     map.addControl(new NavigationControl(), "top-right");
 
     class stories_ctrl {
-                onAdd(map) {
-                    this.map = map;
-                    this.container = document.createElement('div');
-                    //this.container.className = 'click_country_control_container';
-                    this.container.className = 'stories_ctrl';
-                    
+      onAdd(map) {
+        this.map = map;
+        this.container = document.createElement("div");
+        //this.container.className = 'click_country_control_container';
+        this.container.className = "stories_ctrl";
 
-                    return this.container;
-                }
-                onRemove() {
-                    this.container.parentNode.removeChild(this.container);
-                    this.map = undefined;
-                }
-            }
+        return this.container;
+      }
+      onRemove() {
+        this.container.parentNode.removeChild(this.container);
+        this.map = undefined;
+      }
+    }
 
-            let stories_ctrl_ = new stories_ctrl();
-
-            map.addControl(stories_ctrl_, 'bottom-right');
-            
-            jQuery('.stories_ctrl').addClass('mapboxgl-ctrl');
-            let html='<div class="stories_container">'
-            html+=['psc','vox','jxc','erc','cs','pp','cup'].map((d)=>{
-
-              return '<div class="story '+d+'_story"><h2>'+d.toUpperCase()+'</h2><h4></h4><span>Max voted proportion municipalities</span><ul></ul></div>';
-            }).join('')
-            html+='</div>';
-            jQuery('.stories_ctrl').append(html);
-           /*  jQuery('.stories_ctrl').append('<div class="stories_container">'
-              +'<div class="story psc_story"><h2>PSC: a declining party</h2><span>Max voted proportion municipalities</span><ul></ul></div><div class="story vox_story"><h2>VOX: a new extreme-right rising party</h2><span>Max voted proportion municipalities</span><ul></ul>'
-                +'</div></div>') */
     function update() {
       featureElements = svg.selectAll("path.municipi");
       //featureElements.raise();
       featureElements.attr("d", path);
       if (first_update) {
         first_update = false;
-                
-          console.warn('vox');
-                 
-       
-        
-         svg.on('mouseout', function() {
-            console.warn('mouseout')
-            municipi_popup.remove();
-        }) 
-     
+
+        console.warn("vox");
+
+        svg.on("mouseout", function () {
+          console.warn("mouseout");
+          municipi_popup.remove();
+        });
       }
     }
-    
+
     map.on("load", function () {
       let fs = munis.features;
 
@@ -222,11 +169,10 @@ story('VOX',2019)
           "fill-opacity": 0,
         },
       });
-      
 
       var container = map.getCanvasContainer();
 
-      svg = d3.select(container).append("svg")
+      svg = d3.select(container).append("svg");
       svg
         .style("position", "absolute")
         .style("width", "100%")
@@ -234,7 +180,7 @@ story('VOX',2019)
         .style("top", "0")
         .style("left", "0")
         .style("z-index", "1000")
-        .attr('class','svg_map');
+        .attr("class", "svg_map");
 
       featureElements = svg
         .selectAll("path.municipi")
@@ -261,26 +207,20 @@ story('VOX',2019)
         .attr("code", function (d) {
           return d.properties.municipi;
         })
-        .on('mouseenter', function(d) {
-          console.warn(d)
-         /*  d3.selectAll('path.municipi').attr('opacity', .6) 
+        .on("mouseenter", function (d) {
+          console.warn(d);
+          /*  d3.selectAll('path.municipi').attr('opacity', .6)
          d3.select(this).attr('opacity', 1) */
-         
-         
-           _f=d;
-        
+
+          _f = d;
         })
-        .on('mouseleave', function(d) {
-          
-         // d3.select(this).attr('fill', 'red')
-           _f=null;
-        
-        })
+        .on("mouseleave", function (d) {
+          // d3.select(this).attr('fill', 'red')
+          _f = null;
+        });
 
       update();
-      
     });
-  
 
     map.on("viewreset", function () {
       /* this_app.to_update=true;
@@ -308,125 +248,166 @@ story('VOX',2019)
       svg.classed("hidden", false);
     });
 
-  
-
     let municipi_popup = new Popup({
-                closeButton: false,
-                closeOnClick: true,
-//className: 'municipi_map_popup',
-                //offset: [20, -20]
-            offset: {
-                    'bottom': [0, -20],
-                    'top': [0, 15],
-                    'top-left': [0, 0], //[linearOffset, (markerHeight - markerRadius - linearOffset) * -1],
-                    'top-right': [0, 0], //[-linearOffset, (markerHeight - markerRadius - linearOffset) * -1],
+      closeButton: false,
+      closeOnClick: true,
+      //className: 'municipi_map_popup',
+      //offset: [20, -20]
+      offset: {
+        bottom: [0, -20],
+        top: [0, 15],
+        "top-left": [0, 0], //[linearOffset, (markerHeight - markerRadius - linearOffset) * -1],
+        "top-right": [0, 0], //[-linearOffset, (markerHeight - markerRadius - linearOffset) * -1],
+      },
+    });
 
-                } 
-            });
-            
+    //  jQuery('.maplibregl-popup').style('z-index', 1000000000)
 
-          //  jQuery('.maplibregl-popup').style('z-index', 1000000000)
-    
-       
-    map.on("mousemove", function(e) {
-
-
-
-
-
-      if (!filtered_data || !_f) 
-      { 
-        console.warn('no data')
-        jQuery('.maplibregl-popup').hide()
+    map.on("mousemove", function (e) {
+      if (!filtered_data || !_f) {
+        console.warn("no data");
+        jQuery(".maplibregl-popup").hide();
         municipi_popup.remove();
         /* d3.selectAll('.svg_map path').attr('opacity', 1);
          d3.select(this).attr('opacity', 1);
           */
         return false;
-
       }
 
-      let binded_data=filtered_data.filter((d)=>
-                {
-                  //console.warn(String(d.municipality_code),String(_f.target.__data__.properties.codiine));
-                  if (String(d.municipality_code)==String(_f.target.__data__.properties.codiine))
-                  {
-                    
-                  //  console.warn(String(d.municipality_code)==String(_f.target.__data__.properties.codiine));
-                 return d;
-                 //String(d.municipality_code)==String(_f.target.__data__.properties.codiine)
-                  }
-                 
-                })[0];
-      
-      if (!binded_data)
-      {
-   
-        municipi_popup.setHTML('<h3>'+_f.target.__data__.properties.nom_muni+'</h3>')
+      let binded_data = filtered_data.filter((d) => {
+        //console.warn(String(d.municipality_code),String(_f.target.__data__.properties.codiine));
+        if (
+          String(d.municipality_code) ==
+          String(_f.target.__data__.properties.codiine)
+        ) {
+          //  console.warn(String(d.municipality_code)==String(_f.target.__data__.properties.codiine));
+          return d;
+          //String(d.municipality_code)==String(_f.target.__data__.properties.codiine)
+        }
+      })[0];
+
+      if (!binded_data) {
+        municipi_popup.setHTML(
+          "<h3>" + _f.target.__data__.properties.nom_muni + "</h3>"
+        );
         var latlng = e.lngLat;
         municipi_popup.addTo(map);
-        municipi_popup.setLngLat(latlng)
+        municipi_popup.setLngLat(latlng);
         return false;
       }
-      console.info(d3.selectAll(_f.target))
+      console.info(d3.selectAll(_f.target));
       municipi_popup.addTo(map);
-        var latlng = e.lngLat;
-        var x = e.originalEvent.clientX
-        var y = e.originalEvent.clientY
-        
+      var latlng = e.lngLat;
+      var x = e.originalEvent.clientX;
+      var y = e.originalEvent.clientY;
 
-        //console.warn(x, y)
-            
-        municipi_popup.setLngLat(latlng)
-        
-       
-                
-               
-                //[pos].voted_proportion
-                if (binded_data)
-                {
-                  
-                  municipi_popup.setHTML('<h3>'+_f.target.__data__.properties.nom_muni+'</h3><div>'+binded_data.voted_proportion+'</div>')
-                 
-              
-                }
-   
+      //console.warn(x, y)
 
+      municipi_popup.setLngLat(latlng);
 
-    })
-
-
+      //[pos].voted_proportion
+      if (binded_data) {
+        municipi_popup.setHTML(
+          "<h3>" +
+            _f.target.__data__.properties.nom_muni +
+            "</h3><div>" +
+            binded_data.voted_proportion +
+            "</div>"
+        );
+      }
+    });
   });
 
   onDestroy(() => {
     map.remove();
   });
+
+  $: max_voted_features_party = observable_data
+    .filter((d2) => d2.main_party == selectedParty && d2.year == selectedYear)
+    .sort((a, b) => b.voted_proportion - a.voted_proportion)
+    .slice(0, 5);
 </script>
 
 <div class="map-wrap">
-  <div class="map" id="map" bind:this={mapContainer} />
+  {#if selectedParty && showOverlay}
+    <div class="map-overlay">
+      <div class="story psc_story" style="display: block;">
+        <h2>{selectedParty}</h2>
+        <div>
+          <button
+            class="yearbtn"
+            class:btn-active={selectedYear === "2015"}
+            on:click={() => (selectedYear = "2015")}>2015</button
+          >
+          <button
+            class="yearbtn"
+            class:btn-active={selectedYear === "2019"}
+            on:click={() => (selectedYear = "2019")}>2019</button
+          >
+        </div>
+        <span>Max voted proportion municipalities</span>
+        <ul>
+          {#each max_voted_features_party as d}
+            <li>
+              <span class="party-name" title={d.municipality}
+                >{d.municipality}:</span
+              >
+              <span class="voted-proportion"
+                >{d.voted_proportion.toFixed(1)}%</span
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
+    </div>
+  {/if}
+  <div class="map" id="map" />
 </div>
 
 <style>
-  /* why not working...? */
-/* .maplibregl-control-container {
-    z-index: 99999999;
-    position: relative;
-} */
-
-.stories_container >div
-{
-  display: none;
-  
-}
-
-
-  svg,
-  .maplibregl-canvas-container svg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  .yearbtn {
+    padding: 5px;
   }
+  .btn-active {
+    background: #888;
+  }
+
+  .map-overlay {
+    position: absolute;
+    z-index: 9999999;
+    background: black;
+    border: 1px solid white;
+    right: 0;
+    bottom: 0;
+
+    padding: 10px;
+    overflow-y: auto;
+    width: 180px;
+    border: 1px solid grey;
+    font-size: 13px;
+  }
+
+  .story ul {
+    list-style-type: none;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    row-gap: 10px;
+  }
+
+  .story ul li {
+    display: contents;
+  }
+  .story .voted-proportion {
+    text-align: right;
+  }
+  .story .party-name {
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
   .map-wrap {
     position: relative;
     float: right;
@@ -434,28 +415,25 @@ story('VOX',2019)
     height: 570px;
   }
 
-  .map,
-  .maplibregl-canvas {
+  .map {
     position: absolute !important;
     width: 100% !important;
     height: 100% !important;
   }
 
-  .watermark {
+  /* .watermark {
     position: absolute;
     left: 10px;
     bottom: 10px;
     z-index: 999;
   }
 
-  .mapboxgl-popup, .maplibregl-popup
-
-{
-  z-index: 111111111!important;
-}
-.legendWrapper path.domain,
-.legendWrapper line {
-  opacity: 0;
-}
-
+  .mapboxgl-popup,
+  .maplibregl-popup {
+    z-index: 111111111 !important;
+  }
+  .legendWrapper path.domain,
+  .legendWrapper line {
+    opacity: 0;
+  } */
 </style>
