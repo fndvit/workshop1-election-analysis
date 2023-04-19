@@ -30,7 +30,7 @@
     </p>
  
     <h2>Exploration</h2>
-    
+    <BarChartLayer/>
  
     <p>With that said, let’s progress to discuss the data. </p>
     <p>First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
