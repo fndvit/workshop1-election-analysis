@@ -14,7 +14,9 @@
       -1
     );
   });
-  $: selected_schema = "interpolateWarm";
+  $: selected_schema = "interpolateTurbo";
+  let no_data=false;
+  
 
   let selectedYear = "2015";
   let selectedParty = "ERC";
@@ -26,15 +28,41 @@
     (d) => d.year == parseInt(selectedYear) && d.main_party == selectedParty
   );
 
+
+  $: no_data=filtered_data.length==0;
   $: f = filtered_data
     .filter((d) => d.voted_proportion > 0)
     .map((d) => d.voted_proportion);
 
-  $: stats = {
+    function someFunc() {
+	console.log(my_value);
+}
+
+
+
+  function get_stats()
+  {
+    if (f.length>0)
+    return {
+      min: d3.min(f),
+      max: d3.max(f),
+      avg: d3.mean(f).toFixed(3)
+    };
+    else
+    return {
+      min: 0,
+      max: 0,
+      avg: 0
+    };
+  }
+
+  $: stats= get_stats(f);
+ /*  $: stats = {
     min: d3.min(f),
     max: d3.max(f),
-    avg: d3.mean(f),
-  };
+    avg: d3.mean(f).toFixed(3)
+  }; */
+
   $: colorScale = createColorScale(selected_schema, stats.min, stats.max);
 </script>
 
@@ -55,8 +83,11 @@
     </select>
   {/if}
 </div>
-{#if selectedParty && selectedYear && selected_schema}
-  <BasicStats {filtered_data} {colorScale} {stats} />
+{#if selectedParty && selectedYear && selected_schema && !no_data}
+  <BasicStats {filtered_data} {colorScale} {stats} {no_data}/>
+{/if}
+{#if no_data}
+  <div class="no_data">No data for {selectedParty} on {selectedYear}</div>
 {/if}
 
 <div class="story-buttons">
@@ -73,8 +104,10 @@
 
 <Map
   {filtered_data}
+  
   {colorScale}
   {selectedParty}
+  
   showOverlay={storyParties.includes(selectedParty)}
   bind:selectedYear
 />
@@ -112,9 +145,14 @@
     opacity: 0;
   }
 
+  :global(.mapboxgl-popup-content)
+  {
+    background-color: black;
+  }
   :global(.mapboxgl-popup),
   :global(.maplibregl-popup) {
-    color: black !important;
+    color: white !important;
+    
     z-index: 111111111 !important;
   }
   :global(.maplibregl-ctrl-bottom-right) {

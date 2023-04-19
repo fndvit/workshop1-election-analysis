@@ -34,10 +34,10 @@
   let first_update = true;
 
   $: if (filtered_data.length > 0 && featureElements) {
-    console.warn(filtered_data);
+    
 
     let arr = filtered_data.map((d) => d.municipality_code);
-
+   
     featureElements
       .transition()
       .duration(450)
@@ -55,6 +55,21 @@
           return "black";
         }
       });
+  }
+  else
+  {
+    if (filtered_data.length == 0)
+    {
+    featureElements=svg.selectAll("path.municipi");
+    featureElements.transition()
+      .duration(450)
+      .delay(function (d, i) {
+        return i * 2;
+      })
+
+      .attr("fill",'black')
+    }
+    
   }
 
   onMount(() => {
@@ -119,10 +134,8 @@ story('VOX',2019)
       if (first_update) {
         first_update = false;
 
-        
-
-        svg.on("mouseout", function () {
-          console.warn("mouseout");
+    
+        svg.on("mouseout", function () {          
           municipi_popup.remove();
         });
       }
@@ -209,7 +222,7 @@ story('VOX',2019)
 
     map.on("mousemove", function (e) {
       if (!filtered_data || !_f) {
-        console.warn("no data");
+        
         jQuery(".maplibregl-popup").hide();
         municipi_popup.remove();
     
@@ -229,6 +242,8 @@ story('VOX',2019)
       })[0];
 
       if (!binded_data) {
+
+        //even if no votes, we popup the name of municipality
         municipi_popup.setHTML(
           "<h3>" + _f.target.__data__.properties.nom_muni + "</h3>"
         );
@@ -237,7 +252,7 @@ story('VOX',2019)
         municipi_popup.setLngLat(latlng);
         return false;
       }
-      console.info(d3.selectAll(_f.target));
+      
       municipi_popup.addTo(map);
       var latlng = e.lngLat;
       var x = e.originalEvent.clientX;
@@ -246,13 +261,24 @@ story('VOX',2019)
       municipi_popup.setLngLat(latlng);
       
       if (binded_data) {
+       
         municipi_popup.setHTML(
-          "<h3>" +
+          '<h3>' +
             _f.target.__data__.properties.nom_muni +
-            "</h3><div>" +
+            '</h3><div style="text-decoration-thickness: .4rem;text-decoration-line: underline;text-decoration-color:'+colorScale(binded_data.voted_proportion)+'">' +
+            binded_data.voted_proportion +
+            '</div>'
+        );
+        setTimeout(function(){
+      
+      },1000)
+        /*
+         "<h3>" +
+            _f.target.__data__.properties.nom_muni +
+            '</h3><div style="text-decoration: underline;text-decoration-color:'+colorScale(binded_data.voted_proportion)+'>' +
             binded_data.voted_proportion +
             "</div>"
-        );
+            */
       }
     });
   });

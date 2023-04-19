@@ -6,7 +6,8 @@
   import dataVotesLeftRight from "./data/political_alignment.json"
   const multilineColors1 = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
   const multilineColors2 = ['#008837','#a6dba0','#c2a5cf','#7b3294'];
-  let width;
+  let w;
+  
 </script>
 
 <main>
@@ -16,7 +17,7 @@
     <p>By Marina Rovira Boix, Joseph Ricafort, Pere Roca Ristol</p>
   
   </header>
-  <section>
+  <section bind:clientWidth={w}>
     <h1>Introduction</h1>
     <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose who will govern each of the country's councils. </p>
     <br>
@@ -31,7 +32,7 @@
  
     <h2>Exploration</h2>
     
-      <BarChartLayer bind:clientWidth={width} {width}/>
+      <BarChartLayer {w}/>
     
  
     <p>With that said, let’s progress to discuss the data. </p>
@@ -56,7 +57,7 @@
      <MultiLineLayer inputData={dataVotes} colors={multilineColors1}/> 
 
 
-    <p>We can see a party that has dropped a lot, which is the PSC, considered moderate left and the current party that governs in Spain alongside Podemos, which has dropped a little but is always between 200,000 and 300,000 votes.</p>
+    <p>We can see a party that has dropped a lot, which is the <span class="highlighted">PSC, considered moderate left and the current party that governs in Spain alongside Podemos, which has dropped a little but is always between 200,000 and 300,000 votes.</p>
     <p>The Others category is also increased, which includes all the municipal parties that could not be related to the main ones. These are just local groups that exist only for municipal elections, usually with people from that place who want to lead change but not be associated with a major party. The main reason is usually the association with the ideals of one of the elders.</p>
 
     <br>
@@ -92,6 +93,11 @@
 </main>
 
 <style>
+  .highlighted 
+  {
+    font-size: 1.4rem;
+    color: goldenrod;
+  }
   .bar-chart {
     
     width: 100%;

@@ -7,6 +7,7 @@
   export let selectedParty;
 </script>
 
+
 {#if years && years.length > 0}
   <div class="yearMenu">
     <select
