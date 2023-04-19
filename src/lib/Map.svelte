@@ -269,9 +269,7 @@ story('VOX',2019)
             binded_data.voted_proportion +
             '%</div>'
         );
-        setTimeout(function(){
-      
-      },1000)
+    
         /*
          "<h3>" +
             _f.target.__data__.properties.nom_muni +

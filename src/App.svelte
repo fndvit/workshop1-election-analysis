@@ -146,4 +146,11 @@
     
     background: black;
   }
+  :global(.maplibregl-popup-content) 
+  {
+    border: 1.5px solid white
+  }
+  :global(.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip, .maplibregl-popup-anchor-bottom .maplibregl-popup-tip) {
+    border-top-color: black;
+  }
 </style>
