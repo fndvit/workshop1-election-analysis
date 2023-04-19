@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import tallyDataRaw from "../data/fiveyears_tally.json";
   let figureEl;
+  export let width;
   let tallyData = tallyDataRaw.map((d) => ({
     id: d.main_party,
     label: d.main_party,
@@ -10,9 +11,10 @@
     gains: d.gained,
     no_change: d.no_change,
   }));
+  
   onMount(() => {
     const margin = { top: 50, right: 20, bottom: 10, left: 110 };
-    const width = 1400 - margin.left - margin.right;
+    const width = 1200 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
     const y = d3.scaleBand().rangeRound([0, height]).padding(0.3);
     const x = d3.scaleLinear().rangeRound([0, width]);

@@ -6,7 +6,7 @@
   import dataVotesLeftRight from "./data/political_alignment.json"
   const multilineColors1 = ['#18307b', '#eedd00','#eb6109','#fdb94d','#ed5975','#aaa','#00ff7f','#4488cc','#ee0000','#912c45','#63be21'];
   const multilineColors2 = ['#008837','#a6dba0','#c2a5cf','#7b3294'];
-
+  let width;
 </script>
 
 <main>
@@ -30,7 +30,9 @@
     </p>
  
     <h2>Exploration</h2>
-    <BarChartLayer/>
+    
+      <BarChartLayer bind:clientWidth={width} {width}/>
+    
  
     <p>With that said, let’s progress to discuss the data. </p>
     <p>First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
@@ -90,6 +92,10 @@
 </main>
 
 <style>
+  .bar-chart {
+    
+    width: 100%;
+  }
   :global(.layercake-container line)
   {
     border-left: 1px dotted goldenrod;
@@ -122,5 +128,9 @@
   header {
     max-width: 700px;
     margin: 0 auto;
+  }
+  :global(body) 
+  {
+    background: black;
   }
 </style>
