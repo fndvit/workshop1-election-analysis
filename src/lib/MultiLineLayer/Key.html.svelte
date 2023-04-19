@@ -69,7 +69,7 @@
         class='chip chip__{shape}'
         style='background: {
           shape === `line` ?
-          `linear-gradient(-45deg, #ffffff 40%, ${$zScale(item)} 41%, ${$zScale(item)} 59%, #ffffff 60%)`
+          `linear-gradient(-45deg, #a8e426 40%, ${$zScale(item)} 41%, ${$zScale(item)} 59%, #ffffff 60%)`
           : $zScale(item)};'
       ></div>
       <div class='name'>{displayName(item)}</div>

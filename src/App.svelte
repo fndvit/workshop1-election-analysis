@@ -30,6 +30,7 @@
     </p>
  
     <h2>Exploration</h2>
+    
  
     <p>With that said, let’s progress to discuss the data. </p>
     <p>First, in the chart below, there’s an evolution for the last 5 years of elections for each party. The exploration is done using the general names, rather than all the municipal parties.</p>
@@ -89,6 +90,29 @@
 </main>
 
 <style>
+  :global(.layercake-container line)
+  {
+    border-left: 1px dotted goldenrod;
+  }
+  :global(.layercake-container .tooltip)
+  {
+    background-color: black;
+  }
+  :global(.axis .tick-mark) {
+    font-size: .725em;
+    
+    color:white;
+    
+    
+    text-shadow:unset!important;
+  }
+  :global(.layercake-container .key-item .name,.layercake-container text) {
+    font-size: .725em;
+    
+    color:white;
+    fill:white;
+    text-shadow:unset!important;
+  }
   section {
     padding: 10px;
     margin: 10px;

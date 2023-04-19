@@ -82,10 +82,10 @@
   }
 
   .gridline {
-    border-top: 1px dashed #aaa;
+    border-top: 1px dashed white;
   }
   .tick-mark {
-    border-top: 1px solid #aaa;
+    border-top: 1px solid white;
   }
 
   .baseline.gridline {
@@ -93,6 +93,6 @@
   }
 
   .tick .text {
-    color: #666;
+    color: white;
   }
 </style>

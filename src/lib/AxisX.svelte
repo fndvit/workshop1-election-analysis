@@ -60,12 +60,14 @@
 </div>
 
 <style>
+  
   .axis,
   .tick,
   .tick-mark,
   .gridline,
   .baseline {
     position: absolute;
+    fill:white;
   }
   .axis {
     width: 100%;
@@ -74,6 +76,7 @@
   .tick {
     font-size: .725em;
     font-weight: 200;
+    
   }
 
   .gridline {
@@ -88,7 +91,8 @@
   }
 
   .tick .text {
-    color: #666;
+    fill:white;
+    color: white;
     position: relative;
     white-space: nowrap;
     transform: translateX(-50%);
