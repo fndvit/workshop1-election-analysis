@@ -1,20 +1,44 @@
 <script context="module">
   import * as d3 from "d3";
   import { onMount } from "svelte";
-
+  let no_data=false;
   export function create_scale2(scaleSvgEl, colorScale, filtered_data) {
-    let f = filtered_data
-      .filter((d) => d.voted_proportion > 0)
-      .map((d) => d.voted_proportion);
+    
+    let stats;
+    console.warn(no_data)
+    let svg = d3.select(scaleSvgEl);
+    
+    
+    if (filtered_data.length==0)
+      {
+        stats = {
+        min: 0,
+        max: 0,
+        avg: 0
+      };
+      no_data=true;
+      svg.style('opacity','0');
+      return false;
+      
+    }
+    else
+    {
+    
+      let f = filtered_data
+        .filter((d) => d.voted_proportion > 0)
+        .map((d) => d.voted_proportion);
 
-    let stats = {
-      min: d3.min(f),
-      max: d3.max(f),
-      avg: d3.mean(f),
-    };
+      stats = {
+        min: d3.min(f),
+        max: d3.max(f),
+        avg: d3.mean(f).toFixed(2),
+      };
+    }
+
+    console.log(stats.avg)
     //it shoudl be dynamic
     let svg_width = 300;
-    let svg = d3.select(scaleSvgEl);
+    
 
     svg.selectAll("*").remove();
 
@@ -105,15 +129,24 @@
   export let filtered_data;
   export let colorScale;
   export let stats;
+  
 
   let scaleSvgEl;
 
   // run 2 onwards (reactive updates)
-  $: if (scaleSvgEl) create_scale2(scaleSvgEl, colorScale, filtered_data);
+  $: if (scaleSvgEl && no_data===false)
+  {
+     create_scale2(scaleSvgEl, colorScale, filtered_data);
+  }
+  else
+  {
+    console.log('no data!!!')
+    
+  }
 
   onMount(() => {
     // first run only (when component is mounted)
-    create_scale2(scaleSvgEl, colorScale, filtered_data);
+   // create_scale2(scaleSvgEl, colorScale, filtered_data);
   });
 </script>
 
@@ -123,7 +156,7 @@
   <ul>
     <li>Min: {stats.min}</li>
     <li>Max: {stats.max}</li>
-    <li>Avg: {stats.avg.toFixed(2)}</li>
+    <li>Avg: {stats.avg}</li>
   </ul>
   <div class="scale_container">
     <svg bind:this={scaleSvgEl} />

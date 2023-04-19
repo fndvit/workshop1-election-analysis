@@ -111,20 +111,6 @@ story('VOX',2019)
 
     map.addControl(new NavigationControl(), "top-right");
 
-    class stories_ctrl {
-      onAdd(map) {
-        this.map = map;
-        this.container = document.createElement("div");
-        //this.container.className = 'click_country_control_container';
-        this.container.className = "stories_ctrl";
-
-        return this.container;
-      }
-      onRemove() {
-        this.container.parentNode.removeChild(this.container);
-        this.map = undefined;
-      }
-    }
 
     function update() {
       featureElements = svg.selectAll("path.municipi");
@@ -133,7 +119,7 @@ story('VOX',2019)
       if (first_update) {
         first_update = false;
 
-        console.warn("vox");
+        
 
         svg.on("mouseout", function () {
           console.warn("mouseout");
@@ -145,30 +131,7 @@ story('VOX',2019)
     map.on("load", function () {
       let fs = munis.features;
 
-      const municipis_geojson = {
-        type: "FeatureCollection",
-        features: fs,
-      };
-      map.addSource("municipis_source", {
-        type: "geojson",
-        data: municipis_geojson,
-      });
-      console.log(observable_data);
-      console.warn(municipis_geojson);
-      //we just add but hidden, maybe we can add it later
-      map.addLayer({
-        id: "municipis",
-        type: "fill",
-        source: "municipis_source",
-        layout: {
-          // Make the layer visible by default.
-          visibility: "visible",
-        },
-        paint: {
-          "fill-color": "#088",
-          "fill-opacity": 0,
-        },
-      });
+ 
 
       var container = map.getCanvasContainer();
 
@@ -192,30 +155,17 @@ story('VOX',2019)
           return "municipi code_" + d.properties.municipi;
         })
         .attr("fill", "black")
-        .attr("stroke", "gray")
-
-        /*
-                .attrs(
-                  {
-                      "stroke": "#ffff",
-                      "fill": "black",
-                      "opacity": 0.4,
-                      'stroke-width': 0.4
-                  }
-                ) 
-                */
+        .attr("stroke", "gray")      
         .attr("code", function (d) {
           return d.properties.municipi;
         })
         .on("mouseenter", function (d) {
-          console.warn(d);
-          /*  d3.selectAll('path.municipi').attr('opacity', .6)
-         d3.select(this).attr('opacity', 1) */
+         
 
           _f = d;
         })
         .on("mouseleave", function (d) {
-          // d3.select(this).attr('fill', 'red')
+          
           _f = null;
         });
 
@@ -223,15 +173,12 @@ story('VOX',2019)
     });
 
     map.on("viewreset", function () {
-      /* this_app.to_update=true;
-                this_app.first_update = false; */
-      //svg.classed("hidden", true);
+  
       svg.style("opacity", 0);
       update();
     });
     map.on("movestart", function () {
       svg.classed("hidden", true);
-      //svg.classed("hidden", true);
       svg.style("opacity", 0);
     });
     map.on("rotate", function () {
@@ -239,8 +186,7 @@ story('VOX',2019)
       svg.style("opacity", 0);
     });
     map.on("moveend", function () {
-      /* this_app.to_update=true;
-                this_app.first_update = false; */
+      
       svg.classed("hidden", true);
       svg.style("opacity", 0);
       update();
@@ -251,8 +197,7 @@ story('VOX',2019)
     let municipi_popup = new Popup({
       closeButton: false,
       closeOnClick: true,
-      //className: 'municipi_map_popup',
-      //offset: [20, -20]
+      
       offset: {
         bottom: [0, -20],
         top: [0, 15],
@@ -261,28 +206,25 @@ story('VOX',2019)
       },
     });
 
-    //  jQuery('.maplibregl-popup').style('z-index', 1000000000)
 
     map.on("mousemove", function (e) {
       if (!filtered_data || !_f) {
         console.warn("no data");
         jQuery(".maplibregl-popup").hide();
         municipi_popup.remove();
-        /* d3.selectAll('.svg_map path').attr('opacity', 1);
-         d3.select(this).attr('opacity', 1);
-          */
+    
         return false;
       }
 
       let binded_data = filtered_data.filter((d) => {
-        //console.warn(String(d.municipality_code),String(_f.target.__data__.properties.codiine));
+      
         if (
           String(d.municipality_code) ==
           String(_f.target.__data__.properties.codiine)
         ) {
-          //  console.warn(String(d.municipality_code)==String(_f.target.__data__.properties.codiine));
+       
           return d;
-          //String(d.municipality_code)==String(_f.target.__data__.properties.codiine)
+       
         }
       })[0];
 
@@ -301,11 +243,8 @@ story('VOX',2019)
       var x = e.originalEvent.clientX;
       var y = e.originalEvent.clientY;
 
-      //console.warn(x, y)
-
       municipi_popup.setLngLat(latlng);
-
-      //[pos].voted_proportion
+      
       if (binded_data) {
         municipi_popup.setHTML(
           "<h3>" +
