@@ -265,9 +265,9 @@ story('VOX',2019)
         municipi_popup.setHTML(
           '<h3>' +
             _f.target.__data__.properties.nom_muni +
-            '</h3><div style="text-decoration-thickness: .4rem;text-decoration-line: underline;text-decoration-color:'+colorScale(binded_data.voted_proportion)+'">' +
+            '</h3><div style="font-size:1.1rem;text-decoration-thickness: .4rem;text-decoration-line: underline;text-decoration-color:'+colorScale(binded_data.voted_proportion)+'">' +
             binded_data.voted_proportion +
-            '</div>'
+            '%</div>'
         );
         setTimeout(function(){
       
