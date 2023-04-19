@@ -19,7 +19,7 @@
   </header>
   <section bind:clientWidth={w}>
     <h1>Introduction</h1>
-    <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose who will govern each of the country's councils. </p>
+    <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose which party will be elected for each of the country's councils. </p>
     <br>
 
     <p>The municipal elections, which are held every four years, are the ones that have the most impact on a day-to-day basis, because they serve to choose the representatives who will have the responsibility of adopting the policies most linked to the citizenry. The parties face them not only with the desire to take on the maximum number of mayors and representatives possible, but also as a platform to consolidate their local power.</p>
@@ -56,17 +56,18 @@
      <MultiLineLayer inputData={dataVotes} colors={multilineColors1}/> 
 
 
-    <p>We can see a party that has dropped a lot, which is the <span class="highlighted">PSC, considered moderate left and the current party that governs in Spain alongside Podemos, which has dropped a little but is always between 200,000 and 300,000 votes.</p>
-    <p>The Others category is also increased, which includes all the municipal parties that could not be related to the main ones. These are just local groups that exist only for municipal elections, usually with people from that place who want to lead change but not be associated with a major party. The main reason is usually the association with the ideals of one of the elders.</p>
+    <p>We can see a party that has dropped a lot, which is the <span class="highlighted">PSC</span>, considered moderate left and the current party elected in Spain alongside <span class="highlighted">Podemos</span>, which has dropped a little but is always between 200,000 and 300,000 votes.</p>
+    <p>The <span class="highlighted">Others</span> category is also increased, which includes all the municipal parties that could not be related to the main ones. These are just local groups that exist only for municipal elections, usually with people from that place who want to lead change but not be associated with a major party. The main reason is usually the association with the ideals of one of the elders.</p>
 
     <br>
 
-    <p>A curious case in the correct parties section is Vox & Ciutadans, both recently created (in the last 20 years) while others like PP or PSOE have been around since the 70s. They were new in 2003 and both are in 0 votes, but they got about 23,000 votes. Ciutadans has always won more votes than VOX. However, they are having an internal crisis at the moment, so this could change in the future. What we can detect from the graph is that while both are increasing votes, the PP (which is the other one on the right) is decreasing its numbers.</p>
+    <p>A curious case in the correct parties section is <span class="highlighted">Vox</span> & <span class="highlighted">Ciutadans</span>, both recently created (in the last 20 years) while others like PP or PSOE have been around since the 70s. They were new in 2003 and both are in 0 votes, but they got about 23,000 votes. Ciutadans has always won more votes than VOX. However, they are having an internal crisis at the moment, so this could change in the future. What we can detect from the graph is that while both are increasing votes, the PP (which is the other one on the right) is decreasing its numbers.</p>
     <p>Hopefully this means that the people who vote well stay on the right, but the total number of people who vote for them does not increase.</p>
 
     <br>
 
-    <p>Finally, but not least, there is a notable increase in JxCat and ERC, although one moderate left and the other moderate right, they are, along with the CUP, the three parties that defend the independence of Catalonia. Last year all three together got 43% of the total votes.</p>
+    <p>Finally, but not least, there is a notable increase in <span class="highlighted">JxCat</span> and <span class="highlighted">ERC</span>, although one moderate left and the other moderate right, they are, along with the <span class="highlighted">CUP</span>, the three parties that defend the independence of Catalonia.
+       Last year all three together got 43% of the total votes.</p>
     <p>We can better see the gains and losses of councilors between 2015 and 2019.</p>
  
     <BarChartLayer bind:clientWidth={w} {w}/>
