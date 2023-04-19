@@ -11,9 +11,19 @@
     gains: d.gained,
     no_change: d.no_change,
   }));
-  export let w;
+export let w;
+ // console.log({tallyData})
+
   onMount(() => {
-    
+    const tooltip = d3.select('body') 
+      .append('div')
+      .attr('class','tooltip')
+      .style('position', 'absolute')
+      .style('z-index', '1')
+      .style('visibility', 'hidden')
+      .style('border-radius', '4px')
+      .style('color', '#fff');
+
     const margin = { top: 50, right: 10, bottom: 10, left: 60 };
     
     const width = 700 - margin.left - margin.right;
@@ -52,6 +62,7 @@
       });
       return d;
     });
+    //console.log("data"+{data})
     //console.log(data.length)
     const minValue = d3.min(data, (d) => d.boxes[0].x0);
     const maxValue = d3.max(data, (d) => d.boxes[d.boxes.length - 1].x1);
@@ -83,7 +94,35 @@
       .attr("height", y.bandwidth())
       .attr("x", (d) => x(d.x0))
       .attr("width", (d) => x(d.x1) - x(d.x0))
-      .style("fill", (d) => color(d.name));
+      .style("fill", (d) => color(d.name))
+      // .on("mouseover", function(e,d,i) {
+      //   console.log(arguments)
+      //   let tooltipWidth = tooltip.node().offsetWidth;
+      //   let tooltipHeight = tooltip.node().offsetHeight;
+      //   tooltip
+      //     .style("left", e.pageX - tooltipWidth/2 +'px')
+      //     .style("top", e.pageY-tooltipHeight - 10+'px')
+      //     .style('background', 'rgba(0,0,0,0.8)')
+      //     .style('visibility', 'visible')
+      //     .html( (d) => 
+      //       {
+      //         console.log(d)
+      //       return `<b>Loss</b>: ${d.losses} <br/>
+      //                         <b>Hold</b>: ${d.no_change} <br/>
+      //                         <b>Gain</b>: ${d.gains}`
+      //       });
+      //   d3.select(this).attr("fill", "steelblue");})
+      // .on('mousemove', function (e) {
+      //   let tooltipWidth = tooltip.node().offsetWidth;
+      //   let tooltipHeight = tooltip.node().offsetHeight;
+      //   tooltip
+      //     .style("left", e.pageX - tooltipWidth/2 +'px')
+      //     .style("top", e.pageY-tooltipHeight - 10+'px')
+      // })
+      // .on("mouseout", function(e,d) {
+      //   tooltip
+      //     .style('visibility', 'hidden')
+      //   d3.select(this).attr("fill", "purple");});
     bars
       .append("text")
       .attr("x", (d) => x(d.x0))
@@ -114,15 +153,6 @@
     // this is not nice, we should calculate the bounding box and use that
     const legend_tabs = [0, 120, 200, 375, 450];
 
-    const tooltip = d3.select('body') 
-      .append('div')
-      .style('position', 'absolute')
-      .style('z-index', '1')
-      .style('visibility', 'hidden')
-      .style('padding', '10px')
-      .style('background', 'rgba(0,0,0,0.6)')
-      .style('border-radius', '4px')
-      .style('color', '#fff');
 
     const legend = startp
       .selectAll(".legend")
@@ -146,7 +176,8 @@
       .attr("dy", ".35em")
       .style("text-anchor", "begin")
       .style("font", "10px sans-serif")
-      .text((d) => legendLabels.get(d));
+      .text((d) => legendLabels.get(d))
+      .style("fill", "white");
     svg
       .selectAll(".axis path")
       .style("fill", "none")
@@ -161,6 +192,7 @@
     setTimeout(() => {
       const movesize = width / 2 - startp.node().getBBox().width / 2;
       svg.selectAll(".legendbox").attr("transform", `translate(${movesize},0)`);
+      svg.selectAll(".legendbox text").style('fill','white')
     }, 0);
   });
 </script>
@@ -170,5 +202,9 @@
     
     width: 100%;
     height: 100%;
+  }
+  .legend text 
+  {
+    fill: white;
   }
 </style>
