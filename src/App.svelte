@@ -31,7 +31,6 @@
  
     <h2>Exploration</h2>
     
-      <BarChartLayer bind:clientWidth={width} {width}/>
     
  
     <p>With that said, let’s progress to discuss the data. </p>
@@ -69,6 +68,8 @@
     <p>Finally, but not least, there is a notable increase in JxCat and ERC, although one moderate left and the other moderate right, they are, along with the CUP, the three parties that defend the independence of Catalonia. Last year all three together got 43% of the total votes.</p>
     <p>We can better see the gains and losses of councilors between 2015 and 2019.</p>
  
+    <BarChartLayer bind:clientWidth={width} {width}/>
+
   
 </section>
   
