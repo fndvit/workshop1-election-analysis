@@ -18,7 +18,7 @@
   
   </header>
   <section bind:clientWidth={w}>
-    <h1>Introduction</h1>
+    <h2>Introduction</h2>
     <p>The next 28th of May, people from 947 municipalities are summoned to the polls to choose which party will be elected for each of the country's councils. </p>
     <br>
 
@@ -61,7 +61,8 @@
 
     <br>
 
-    <p>A curious case in the correct parties section is <span class="highlighted">Vox</span> & <span class="highlighted">Ciutadans</span>, both recently created (in the last 20 years) while others like PP or PSOE have been around since the 70s. They were new in 2003 and both are in 0 votes, but they got about 23,000 votes. Ciutadans has always won more votes than VOX. However, they are having an internal crisis at the moment, so this could change in the future. What we can detect from the graph is that while both are increasing votes, the PP (which is the other one on the right) is decreasing its numbers.</p>
+    <p>A curious case in the correct parties section is <span class="highlighted">Vox</span> & <span class="highlighted">Ciutadans</span>, both recently created (in the last 20 years) while others like <span class="highlighted">PP</span> or <span class="highlighted">PSOE</span> have been around since the 70s. They were new in 2003 and both are in 0 votes, but they got about 23,000 votes. 
+      <span class="highlighted">Ciutadans</span> has always won more votes than <span class="highlighted">VOX</span>. However, they are having an internal crisis at the moment, so this could change in the future. What we can detect from the graph is that while both are increasing votes, the <span class="highlighted">PP</span> (which is the other one on the right) is decreasing its numbers.</p>
     <p>Hopefully this means that the people who vote well stay on the right, but the total number of people who vote for them does not increase.</p>
 
     <br>
@@ -131,6 +132,10 @@
     padding: 10px;
     margin: 10px;
     color: white;
+  }
+  :root 
+  {
+    color:white;
   }
   section,
   header {
